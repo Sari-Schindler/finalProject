@@ -217,4 +217,102 @@ class StockStrategyAnalyzer {
     }
 
     analyzeMACD(data) {
-        const macdData = this.calculateMACD(data, this.params.shortTermPeriod, this.params.longTerm
+        const macdData = this.calculateMACD(data, this.params.shortTermPeriod, this.params.longTermPeriod, this.params.signalPeriod);
+        let signals = [];
+
+        for (let i = 0; i < macdData.length; i++) {
+            if (macdData[i].macd !== null && macdData[i].signal !== null) {
+                const previousSignal = signals[signals.length - 1];
+                if (macdData[i].macd > macdData[i].signal) {
+                    if (!previousSignal || previousSignal.type !== 'BUY') {
+                        signals.push({ date: data[i].date, type: 'BUY', price: data[i].close });
+                    }
+                } else if (macdData[i].macd < macdData[i].signal) {
+                    if (!previousSignal || previousSignal.type !== 'SELL') {
+                        signals.push({ date: data[i].date, type: 'SELL', price: data[i].close });
+                    }
+                }
+            }
+        }
+        return signals;
+    }
+
+    analyzeSupportResistance(data) {
+        // Placeholder for support and resistance analysis logic
+        // To be implemented based on specific user requirements
+        let signals = [];
+        // Implement support/resistance logic here
+        return signals;
+    }
+
+    analyzeFibonacciRetracement(data) {
+        // Placeholder for Fibonacci retracement analysis logic
+        // To be implemented based on specific user requirements
+        let signals = [];
+        // Implement Fibonacci retracement logic here
+        return signals;
+    }
+
+    analyzeVolumeAnalysis(data) {
+        let signals = [];
+        for (let i = 1; i < data.length; i++) {
+            const previousSignal = signals[signals.length - 1];
+            if (data[i].close > data[i - 1].close && data[i].volume > data[i - 1].volume) {
+                if (!previousSignal || previousSignal.type !== 'BUY') {
+                    signals.push({ date: data[i].date, type: 'BUY', price: data[i].close });
+                }
+            } else if (data[i].close < data[i - 1].close && data[i].volume > data[i - 1].volume) {
+                if (!previousSignal || previousSignal.type !== 'SELL') {
+                    signals.push({ date: data[i].date, type: 'SELL', price: data[i].close });
+                }
+            }
+        }
+        return signals;
+    }
+
+    analyzeCandlestickPatterns(data) {
+        // Placeholder for candlestick pattern analysis logic
+        // To be implemented based on specific user requirements
+        let signals = [];
+        // Implement candlestick pattern logic here
+        return signals;
+    }
+
+    analyzeTrendFollowing(data) {
+        let signals = [];
+        for (let i = 1; i < data.length; i++) {
+            const previousSignal = signals[signals.length - 1];
+            if (data[i].close > data[i - 1].close) {
+                if (!previousSignal || previousSignal.type !== 'BUY') {
+                    signals.push({ date: data[i].date, type: 'BUY', price: data[i].close });
+                }
+            } else if (data[i].close < data[i - 1].close) {
+                if (!previousSignal || previousSignal.type !== 'SELL') {
+                    signals.push({ date: data[i].date, type: 'SELL', price: data[i].close });
+                }
+            }
+        }
+        return signals;
+    }
+
+    analyzeMeanReversion(data) {
+        const mean = data.reduce((acc, val) => acc + val.close, 0) / data.length;
+        let signals = [];
+        for (let i = 0; i < data.length; i++) {
+            const previousSignal = signals[signals.length - 1];
+            if (data[i].close < mean * (1 - this.params.threshold)) {
+                if (!previousSignal || previousSignal.type !== 'BUY') {
+                    signals.push({ date: data[i].date, type: 'BUY', price: data[i].close });
+                }
+            } else if (data[i].close > mean * (1 + this.params.threshold)) {
+                if (!previousSignal || previousSignal.type !== 'SELL') {
+                    signals.push({ date: data[i].date, type: 'SELL', price: data[i].close });
+                }
+            }
+        }
+        return signals;
+    }
+}
+
+module.exports = StockStrategyAnalyzer;
+
