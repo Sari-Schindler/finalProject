@@ -28,3 +28,36 @@ app.post('/fetchData', async (req, res) => {
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
+
+
+
+
+// const https = require('https');
+// const yahooFinance = require('yahoo-finance2').default;
+// const Portfolio = require('./Portfolio');
+// https.globalAgent.options.rejectUnauthorized = false;
+
+// const myPortfolio = new Portfolio(new Date(), 10000);
+
+// async function runPortfolioExample() {
+//     try {
+//         await myPortfolio.buyStock('AAPL', 10);
+
+//         const portfolio = myPortfolio.getPortfolio();
+//         console.log('Current Portfolio:', portfolio);
+
+//     }
+//     catch (error) {
+//         console.error('Error in portfolio operations:', error);
+//     }
+// }
+
+// runPortfolioExample();
+
+
+
+
+
+
+
+
