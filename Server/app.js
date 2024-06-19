@@ -21,7 +21,7 @@ function App() {
       {chartData ? (
         <Line data={chartData} />
       ) : (
-        <p>Loading data...</p>
+        <p>Loading dataaaaa...</p>
       )}
     </div>
   );
