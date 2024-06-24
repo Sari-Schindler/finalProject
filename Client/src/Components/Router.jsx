@@ -1,32 +1,37 @@
-import { BrowserRouter, Routes, Route, Navigate, Outlet } from "react-router-dom";
-import { useState, useEffect } from "react";
-import Home from "./Home"
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import Home from "./Home";
 import NotFound from "./NotFound";
 import Risks from "./Risks";
 import About from "./About";
-import Try from "./Try";
 import Login from "./Login";
 import Register from "./Register";
 import Debts from "./Debts";
 
-
 const Router = () => {
-    const currentPage = `home`;
-
-    return (<>
-          <BrowserRouter>
-            <Routes>
-                <Route path="/" element={<Navigate to={currentPage} />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/home" element={<Home />} />
-                <Route path="/home/debts" element={<Debts />} />
-                <Route path="/home/about" element={<About />} />
-                <Route path="/home/risks" element={<Risks />} />
-                <Route path="*" element={<NotFound />} />
-            </Routes>
-        </BrowserRouter>
-            
-    </>)
+  return (
+    <BrowserRouter>
+      <Routes>
+        {/* Default route redirects to the login page */}
+        <Route path="/" element={<Navigate to="/login" />} />
+        
+        {/* Login route */}
+        <Route path="/login" element={<Login />} />
+        
+        {/* Registration route */}
+        <Route path="/register" element={<Register />} />
+        
+        {/* Home route with nested routes for subpages */}
+        <Route path="/home" element={<Home />}>
+          <Route path="debts" element={<Debts />} />
+          <Route path="about" element={<About />} />
+          <Route path="risks" element={<Risks />} />
+        </Route>
+        
+        {/* Catch-all route for 404 Not Found */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </BrowserRouter>
+  );
 };
+
 export default Router;
