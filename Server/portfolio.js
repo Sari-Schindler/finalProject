@@ -2,7 +2,7 @@ const yahooFinance = require('yahoo-finance2').default;
 const https = require('https');
 
 https.globalAgent.options.rejectUnauthorized = false;
-
+////trying!!!!
 class Portfolio {
     currentDate;
     cash;
