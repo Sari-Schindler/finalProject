@@ -1,50 +1,42 @@
+const https = require('https');
+const yahooFinance = require('yahoo-finance2').default;
+const Portfolio = require('./Portfolio');
+const Strategy = require('./strategy');
+https.globalAgent.options.rejectUnauthorized = false;
 
-// import React, { useEffect, useState } from 'react';
-// import { Line } from 'react-chartjs-2';
-// import { fetchStockData } from './fetchStockData';
+const myPortfolio = new Portfolio(new Date(), 20000);
 
-// function App() {
-//   const [chartData, setChartData] = useState(null);
+function runPortfolioExample(stockSymbol, quantity) {
 
-//   useEffect(() => {
-//     const getData = async () => {
-//       const data = await fetchStockData('AAPL', '2022-01-01', '2023-01-01');
-//       setChartData(data);
-//     };
+    myPortfolio.buyStock(stockSymbol, quantity);
 
-//     getData();
-//   }, []);
-
-//   return (
-//     <div className="App">
-//       <h1>Stock Data Analysis</h1>
-//       {chartData ? (
-//         <Line data={chartData} />
-//       ) : (
-//         <p>Loading dataaaaa...</p>
-//       )}
-//     </div>
-//   );
-// }
+    const portfolio = myPortfolio.getPortfolio();
+    console.log('Current Portfolio:', portfolio);
 
 
-import express from "express";
-import 'dotenv/config';
-import usersRouter from "./routes/usersRoute.js";
-import registerRouter from "./routes/registerRoute.js";
-import loginRouter from "./routes/loginRoute.js";
-import cors from "cors";
-//import authenticateToken from "./middleware/authenticateToken.js";
+}
 
-const app = express();
-// Other middleware
-app.use(cors());
-app.use(express.json());
+class BuyAndHoldStrategy extends Strategy {
+    constructor(stockSymbol, quantity) {
+        super(stockSymbol, quantity);
+    }
 
-app.use("/login", loginRouter);
-app.use("/register", registerRouter);
-//app.use(authenticateToken);
-app.use("/users", usersRouter);
+    firstDayActions() {
+        console.log(`Buying ${this.quantity} shares of ${this.stockSymbol} on the first day.`);
+        this.portfolio.buyStock();
+    }
 
-//Starting the server
-app.listen(process.env.PORT, () => console.log(`listening on port: ${process.env.PORT}`));
+    dayActions() {}
+}
+
+//const result = myPortfolio.runOnEachDay(runPortfolioExample, 'QQQ', 1, 1);
+
+const myStrategy = new BuyAndHoldStrategy('QQQ', 10);
+myPortfolio.setStrategy(myStrategy);
+myPortfolio.runOnEachDay();
+
+
+const result = myPortfolio.getPortfolio();
+console.log('Final Portfolio:', result);
+console.log('Final Portfolio Value:', myPortfolio.getPortfolioValue());
+
