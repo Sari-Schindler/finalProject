@@ -28,9 +28,6 @@ const Register = () => {
             const response = await fetch(`http://localhost:3000/register/exist?username=${event.target.username.value}&email=${event.target.email.value}`);
             const json = await response.json();
             setAvailable({ username: !json.username, email: !json.email });
-            
-            const updatedUser = { ...user };
-            await addUser(updatedUser);
 
             if (!json.username && !json.email) {
                 requestMoreDetails(event);
@@ -41,18 +38,19 @@ const Register = () => {
     };
 
     const requestMoreDetails = (event) => {
-        setUser((prev) => ({
-            ...prev,
+        setUser({
+            type: "User",
             username: event.target.username.value,
+            email: event.target.email.value,
             password: event.target.password.value,
-            email: event.target.email.value
-        }));
+        });
         setRegisterStep(2);
     };
 
-
     const addUser = async (updatedUser) => {
         try {
+            console.log(updatedUser);
+            debugger;
             const response = await fetch("http://localhost:3000/register", {
                 method: 'POST',
                 body: JSON.stringify(updatedUser),
@@ -64,7 +62,6 @@ const Register = () => {
             if (response.status === 201) {
                 const resBody = await response.json();
                 Cookies.set('token', resBody.token, { expires: 3 });
-                updatedUser.id = resBody.insertId;
                 navigate("/home");
             } else {
                 setErrMessage("500 something went wrong :( try later.");
@@ -73,6 +70,12 @@ const Register = () => {
             setErrMessage("500 something went wrong :( try later.");
         }
     };
+
+    useEffect(() => {
+        if (registerStep === 2) {
+            addUser(user);
+        }
+    }, [registerStep, user]);
 
     return (
         <div>

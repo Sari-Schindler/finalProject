@@ -34,7 +34,7 @@ import usersRouter from "./routes/usersRoute.js";
 import registerRouter from "./routes/registerRoute.js";
 import loginRouter from "./routes/loginRoute.js";
 import cors from "cors";
-//import authenticateToken from "./middleware/authenticateToken.js";
+import authenticateToken from "./middleware/authenticateToken.js";
 
 const app = express();
 // Other middleware
@@ -43,7 +43,7 @@ app.use(express.json());
 
 app.use("/login", loginRouter);
 app.use("/register", registerRouter);
-//app.use(authenticateToken);
+app.use(authenticateToken);
 app.use("/users", usersRouter);
 
 //Starting the server

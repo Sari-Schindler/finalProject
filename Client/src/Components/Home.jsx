@@ -28,14 +28,14 @@ export default function Home() {
 
   const [chartData, setChartData] = useState(null);
 
-  useEffect(() => {
-    const getData = async () => {
-      const data = await fetchStockData('AAPL', '2022-01-01', '2023-01-01');
-      setChartData(data);
-    };
+  // useEffect(() => {
+  //   const getData = async () => {
+  //     const data = await fetchStockData('AAPL', '2022-01-01', '2023-01-01');
+  //     setChartData(data);
+  //   };
 
-    getData();
-  }, []);
+  //   getData();
+  // }, []);
   
   const [haveQuestion, setHaveQuestion] = useState(false);
 
