@@ -1,7 +1,15 @@
 import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 
 export default function LearnMore() {
+
+    const navigate = useNavigate();
+
+    function backToHome(){
+        navigate("/home");
+    }
+
     return(<>
     <h1>Debt: What It Is, How It Works, Types, and Ways to Pay Back</h1>
     <h2>What Is Debt?</h2>
@@ -71,8 +79,7 @@ export default function LearnMore() {
 
         You can also consolidate several debts into one, which may make sense if the new loan carries a lower interest rate. Similarly, you may be able to transfer your credit card balances to another card with a lower interest rate or, ideally, a 0% interest rate for a period of time.</p>
 
-
-
+        <button onClick={backToHome}>back to home</button>
     
     
     

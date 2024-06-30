@@ -28,23 +28,47 @@
 // }
 
 
+// import express from "express";
+// import 'dotenv/config';
+// import usersRouter from "./routes/usersRoute.js";
+// import registerRouter from "./routes/registerRoute.js";
+// import loginRouter from "./routes/loginRoute.js";
+// import cors from "cors";
+// //import authenticateToken from "./middleware/authenticateToken.js";
+
+// const app = express();
+// // Other middleware
+// app.use(cors());
+// app.use(express.json());
+
+// app.use("/login", loginRouter);
+// app.use("/register", registerRouter);
+// //app.use(authenticateToken);
+// app.use("/users", usersRouter);
+
+// //Starting the server
+// app.listen(process.env.PORT, () => console.log(`listening on port: ${process.env.PORT}`));
+
+
 import express from "express";
 import 'dotenv/config';
 import usersRouter from "./routes/usersRoute.js";
 import registerRouter from "./routes/registerRoute.js";
 import loginRouter from "./routes/loginRoute.js";
+import submitFormRouter from "./routes/submitFormRoute.js";
+import authenticateToken from "./middleware/authenticateToken.js";
+
 import cors from "cors";
-//import authenticateToken from "./middleware/authenticateToken.js";
 
 const app = express();
-// Other middleware
+
 app.use(cors());
 app.use(express.json());
 
 app.use("/login", loginRouter);
 app.use("/register", registerRouter);
-//app.use(authenticateToken);
+app.use("/submitForm", submitFormRouter);
+app.use(authenticateToken);
 app.use("/users", usersRouter);
 
-//Starting the server
 app.listen(process.env.PORT, () => console.log(`listening on port: ${process.env.PORT}`));

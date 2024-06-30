@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
-//import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs';
 
 const Login = () => {
   const [errorMessage, setErrorMessage] = useState("");
@@ -12,8 +12,8 @@ const Login = () => {
     event.preventDefault();
     const email = event.target.email.value;
     const password = event.target.password.value;
-    // const hashedPassword = await bcrypt.hash(password, 10);
-    // console.log(hashedPassword);
+    const hashedPassword = await bcrypt.hash(password, 10);
+    console.log(hashedPassword);
     fetch(`http://localhost:3000/login`,{
             method: 'POST',
             body: JSON.stringify({email: email, password: password}),
@@ -26,7 +26,7 @@ const Login = () => {
           if(response.ok){
             const data = await response.json();
             // console.log('data: ', data)
-            // Cookies.set('token', data.token, { expires: 3});
+            Cookies.set('token', data.token, { expires: 3});
             const userDetails = await getCurrentUser(email);
             console.log('curr: ', userDetails)
             navigateToHomePage(userDetails);
@@ -38,7 +38,6 @@ const Login = () => {
   }
 
   async function getCurrentUser(email){
-
     const response = await fetch(`http://localhost:3000/users?email=${email}`,{
             method: 'GET',
             headers: {

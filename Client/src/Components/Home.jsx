@@ -1,51 +1,39 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import axios from "axios";
 import { NavLink, Outlet } from "react-router-dom";
 import { Line } from 'react-chartjs-2';
-// import { fetchStockData } from '../fetchStockData.js';
-// import {
-//   Chart as ChartJS,
-//   CategoryScale,
-//   LinearScale,
-//   PointElement,
-//   LineElement,
-//   Title,
-//   Tooltip,
-//   Legend,
-// } from 'chart.js';
-
-// // Register Chart.js components
-// ChartJS.register(
-//   CategoryScale,
-//   LinearScale,
-//   PointElement,
-//   LineElement,
-//   Title,
-//   Tooltip,
-//   Legend
-// );
 
 export default function Home() {
-
   const [chartData, setChartData] = useState(null);
-
-  // useEffect(() => {
-  //   const getData = async () => {
-  //     const data = await fetchStockData('AAPL', '2022-01-01', '2023-01-01');
-  //     setChartData(data);
-  //   };
-
-  //   getData();
-  // }, []);
-  
   const [haveQuestion, setHaveQuestion] = useState(false);
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
 
   function handleQuestion() {
     setHaveQuestion(true);
   }
 
-  function leaveMessage(event) {
+  function handleChange(event) {
+    const { name, value } = event.target;
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
+  }
+
+  async function handleSubmit(event) {
     event.preventDefault();
-    setHaveQuestion(false);
+    try {
+      const response = await axios.post('http://localhost:3000/submitForm', formData)
+      if(response.status==200)
+        alert("Your details saved. we will be back soon");
+      console.log('Form submitted successfully:', response.daa);
+      // Reset form and state
+      setFormData({ name: '', email: '', message: '' });
+      setHaveQuestion(false);
+
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    }
   }
 
   return (
@@ -59,15 +47,19 @@ export default function Home() {
       <button onClick={handleQuestion}>Leave Details</button>
 
       {haveQuestion && (
-        <form onSubmit={leaveMessage}>
+        <form onSubmit={handleSubmit}>
           <p>Leave your details and we will get back to you soon</p>
           <div>
             <label htmlFor="name">Name:</label>
-            <input type="text" id="name" required />
+            <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} required />
           </div><br />
           <div>
-            <label htmlFor="phone">Phone:</label>
-            <input type="tel" id="phone" required />
+            <label htmlFor="email">Email:</label>
+            <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required />
+          </div><br />
+          <div>
+            <label htmlFor="message">Message:</label>
+            <textarea id="message" name="message" value={formData.message} onChange={handleChange} required />
           </div><br />
           <button type="submit">Send</button>
         </form>
