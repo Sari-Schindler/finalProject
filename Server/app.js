@@ -63,7 +63,7 @@ class BuyEachMonthStrategy extends Strategy {
 
 
 const myStrategy = new BuyEachMonthStrategy('SPY', 1, 60);
-const myRangesExecutor = new RangesExecutor(stocksData, myStrategy, 1000000, 100);
+const myRangesExecutor = new RangesExecutor(stocksData, myStrategy, 1000000, 3000);
 //myRangesExecutor.setPortfolio()
 const executionResults = myRangesExecutor.allRangesExecution();
 //executionResultsJson = executionResults;

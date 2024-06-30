@@ -3,6 +3,7 @@ const https = require('https');
 
 //צריך לבדוק אם זה בעייתי: כשמגיעים ליום האחרון בהיסטוריה וכבר אין לאן להעלות את האינדקס הפונקציה getNextDate מדפיסה הודעה ולא מחזירה כלום
 https.globalAgent.options.rejectUnauthorized = false;
+
 class Portfolio {
     stocksData;
     currentDate;
@@ -13,6 +14,7 @@ class Portfolio {
     stocks;
     strategy;
     rangeExecutor;
+
     constructor(stocksData, startDate = null, endDate = null, cash, index = 0) {
         this.stocksData = stocksData;
         this.startDate = startDate;
@@ -20,7 +22,7 @@ class Portfolio {
         this.currentDate = startDate;
         this.index = index;
         this.cash = cash;
-        this.stocks = 0
+        this.stocks = 0;
         //this.stocks = new Map();
         this.strategy = null;
         this.rangeExecutor = null;
@@ -32,20 +34,17 @@ class Portfolio {
     }
 
 
-
     //get data by date
     getStockData(date) {
         return this.stocksData.find(day => day.date === date);
     }
 
 
-
     getNextDate() {
-        if(this.stocksData[this.index + 1] !== undefined){
+        if (this.stocksData[this.index + 1] !== undefined) {
             this.index++;
             return this.stocksData[this.index].date;
-        }
-        else{
+        } else {
             console.log('No historical data available for the given date.');
         }
 
@@ -56,11 +55,21 @@ class Portfolio {
     }
 
     convertStringToDate(stringDate) {
-        return new Date(stringDate);
+        const date =  new Date(stringDate);
+        if (!date.getTime()) {
+            console.log('stringDate:', stringDate);
+            throw new Error('Invalid date string');
+        }
+        return date;
     }
 
     isFirstDayOfMonth() {
-        if(this.convertStringToDate(this.stocksData[this.index]).getMonth() != this.convertStringToDate(this.stocksData[this.index - 1]).getMonth()){
+        // console.log("curr day month: ", this.convertStringToDate(this.stocksData[this.index].date).getMonth())
+        // console.log("last day month: ", this.convertStringToDate(this.stocksData[this.index - 1].date).getMonth())
+
+        if (this.convertStringToDate(this.stocksData[this.index].date).getMonth()
+            !== this.convertStringToDate(this.stocksData[this.index - 1].date).getMonth()
+        ) {
             return true;
         }
         return false;
@@ -72,7 +81,7 @@ class Portfolio {
 
         const startValue = this.cash;
 
-        //console.log('start date: ',this.stocksData[this.index].date, 'last date: ', this.endDate)
+        console.log('start date: ',this.stocksData[this.index].date, 'last date: ', this.endDate)
         //let index = startIndex;
         for (let date = this.startDate; date <= this.endDate; date = this.getNextDate()) {
             //runStrCount++;
@@ -80,33 +89,31 @@ class Portfolio {
             this.currentDate = date;
             //console.log("Current date (inner loop): ", date);
             this.strategy.dayActions();
-            this.index++;
 
         }
-        this.index--;
-        console.log("cash:", this.cash);
+        console.log("left cash:", this.cash);
 
         const finalValue = this.checkStockPrice(this.strategy.stockSymbol) * this.stocks;
         const investedMoney = startValue - this.cash;
         const profit = finalValue - investedMoney;
-        console.log("invested: ", investedMoney, "profit: ", profit, "start value: ", startValue);
+        console.log("invested: ", investedMoney, "profit: ", profit, "final value: ", finalValue, "stocks amount: ", this.stocks);
         return profit / investedMoney;
     }
 
 
     buyStocksByDollars(dollars) {
-        const stockCost =  this.checkStockPrice();
+        const stockCost = this.checkStockPrice();
         //console.log("stock cost: ", stockCost)
-        if(stockCost === 0){
+        if (stockCost === 0) {
             console.log('No historical data available for the given date.');
             return;
         }
-        const stocksAmount = stockCost / dollars;
+        const stocksAmount = dollars / stockCost;
         if (this.cash - dollars >= 0) {
             this.cash -= dollars;
             this.stocks += stocksAmount;
             //this.addStock();
-            //console.log(`Bought ${this.strategy.quantity} shares of ${this.strategy.stockSymbol} for $${stockCost} each.`);
+           // console.log(`Bought ${stocksAmount} shares of ${this.strategy.stockSymbol} for $${stockCost} each.`);
         } else {
             console.log('Not enough cash to buy the stocks.');
         }
@@ -121,7 +128,7 @@ class Portfolio {
         return stockData[this.strategy.stockSymbol];
 
     }
-    
+
 //for stocks as a map
     // addStock() {
     //     if (this.stocks.has(this.strategy.stockSymbol)) {
@@ -161,7 +168,6 @@ class Portfolio {
     // }
 
 }
-
 
 
 module.exports = Portfolio;

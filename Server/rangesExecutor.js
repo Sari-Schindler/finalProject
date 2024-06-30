@@ -27,8 +27,11 @@ class RangesExecutor {
         let profits = new Array(this.sampleSize);
         let totalProfit = 0;
         let executionsResults = new Array(this.sampleSize);
-        const indexJump = Math.floor(this.stocksData.length / this.sampleSize);
+        let indexJump = Math.floor(this.stocksData.length / this.sampleSize);
         console.log("index jump:", indexJump);
+        if (indexJump <= 1){
+            indexJump = 1
+        }
             //index < this.stocksData.length - this.strategy.months * 22
         let sequentialIndex = 0
         for (let index = 0; index < this.stocksData.length - indexJump; index += indexJump) {
@@ -67,6 +70,7 @@ class RangesExecutor {
 
     findLastDay(index) {
         let lastDay = this.convertStringToDate(this.stocksData[index].date);
+        //ממציא את היום האחרון - לא לפי מה שיש או אין!!!
         lastDay.setMonth(lastDay.getMonth() + this.strategy.months);
         lastDay = this.convertDateToString(lastDay);
         return lastDay;
