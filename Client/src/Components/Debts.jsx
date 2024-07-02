@@ -79,7 +79,7 @@ export default function LearnMore() {
 
         You can also consolidate several debts into one, which may make sense if the new loan carries a lower interest rate. Similarly, you may be able to transfer your credit card balances to another card with a lower interest rate or, ideally, a 0% interest rate for a period of time.</p>
 
-        <button onClick={backToHome}>back to home</button>
+        <button onClick={backToHome}>scroll up👆        </button>
     
     
     

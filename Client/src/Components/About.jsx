@@ -14,7 +14,7 @@ export default function About() {
     <h1>Build your startegy with us!!!</h1>
     <h2>Why to choose us?</h2>
     <p>blablabla</p>
-    <button onClick={backToHome}>back to home</button>
+    <button onClick={backToHome}>scroll up👆</button>
 
     </>)
 }

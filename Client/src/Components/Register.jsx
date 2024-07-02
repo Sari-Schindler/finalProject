@@ -100,7 +100,7 @@ const Register = () => {
                         onChange={(e) => setPW((prev) => ({ ...prev, verifyPW: e.target.value }))}
                         required
                     />
-                    <button type="submit" disabled={!isPwVerified}>Next</button>
+                    <button type="submit" disabled={!isPwVerified}>confirm[</button>
                 </form>
             )}
             <p>{errMessage}</p>
