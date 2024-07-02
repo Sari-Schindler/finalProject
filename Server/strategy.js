@@ -10,7 +10,7 @@ class Strategy{
     quantity;
     months;
     portfolio;
-    constructor(stockSymbol, quantity, months = 0) {
+    constructor(stockSymbol, quantity, months = 60) {
         this.stockSymbol = stockSymbol;
         this.quantity = quantity;
         this.months = months;

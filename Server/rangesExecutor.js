@@ -34,7 +34,7 @@ class RangesExecutor {
         }
             //index < this.stocksData.length - this.strategy.months * 22
         let sequentialIndex = 0
-        for (let index = 0; index < this.stocksData.length - indexJump; index += indexJump) {
+        for (let index = 1; index < this.stocksData.length - indexJump; index += indexJump) {
 
             console.log("index: ", index, "Sequential index: ", sequentialIndex);
             let lastDay = this.findLastDay(index);
@@ -50,15 +50,21 @@ class RangesExecutor {
             if (index === 0) {
                 this.portfolio.strategy.firstDayActions();
             }
-            else if(this.portfolio.strategy.months !== 0){
-                profits[sequentialIndex] = this.portfolio.rangeExecution();
-                totalTime += (this.portfolio.endDate - this.portfolio.startDate);
+            const profit = this.portfolio.rangeExecution();
+            if (profit) {
+                if(profit === -1){
+                    console.log("profit number: =========================================================", profit);
+                }
+                profits[sequentialIndex] = profit;
                 totalProfit += profits[sequentialIndex];
                 executionsResults[sequentialIndex] = {date: this.stocksData[index].date, results: profits[sequentialIndex]};
                 console.log('Percentage Increase:', profits[sequentialIndex]);
+                sequentialIndex++;
             }
+
+                //totalTime += (this.portfolio.endDate - this.portfolio.startDate);
+
             //console.log('Portfolio Value:', this.portfolio.getPortfolioValue());
-            sequentialIndex++;
 
 
         }
@@ -70,6 +76,7 @@ class RangesExecutor {
 
     findLastDay(index) {
         let lastDay = this.convertStringToDate(this.stocksData[index].date);
+
         //ממציא את היום האחרון - לא לפי מה שיש או אין!!!
         lastDay.setMonth(lastDay.getMonth() + this.strategy.months);
         lastDay = this.convertDateToString(lastDay);

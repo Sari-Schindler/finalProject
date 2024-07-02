@@ -120,6 +120,27 @@ class Portfolio {
 
     }
 
+    sellStocksByDollars(dollars) {
+        const stockCost = this.checkStockPrice();
+        if (stockCost === 0) {
+            console.log('No historical data available for the given date.');
+            return;
+        }
+        const stocksAmount = dollars / stockCost;
+        this.cash += dollars;
+        this.stocks -= stocksAmount;
+    }
+
+    sellAll(){
+        const stockCost = this.checkStockPrice();
+        if (stockCost === 0) {
+            console.log('No historical data available for the given date.');
+            return;
+        }
+        this.cash += this.stocks * stockCost;
+        this.stocks = 0;
+    }
+
     checkStockPrice() {
         //const stockData = this.getStockData(this.currentDate);
         const stockData = this.stocksData[this.index];
@@ -138,18 +159,18 @@ class Portfolio {
     //     }
     // }
 
-    removeStock() {
-        if (this.stocks.has(this.strategy.stockSymbol)) {
-            const currentQuantity = this.stocks.get(this.strategy.stockSymbol);
-            if (currentQuantity > this.strategy.quantity) {
-                this.stocks.set(this.strategy.stockSymbol, currentQuantity - this.strategy.quantity);
-            } else {
-                this.stocks.delete(this.strategy.stockSymbol);
-            }
-        } else {
-            console.log(`Stock ${this.strategy.stockSymbol} not found in portfolio`);
-        }
-    }
+    // removeStock() {
+    //     if (this.stocks.has(this.strategy.stockSymbol)) {
+    //         const currentQuantity = this.stocks.get(this.strategy.stockSymbol);
+    //         if (currentQuantity > this.strategy.quantity) {
+    //             this.stocks.set(this.strategy.stockSymbol, currentQuantity - this.strategy.quantity);
+    //         } else {
+    //             this.stocks.delete(this.strategy.stockSymbol);
+    //         }
+    //     } else {
+    //         console.log(`Stock ${this.strategy.stockSymbol} not found in portfolio`);
+    //     }
+    // }
 
     // getPortfolio() {
     //     const portfolio = {};
