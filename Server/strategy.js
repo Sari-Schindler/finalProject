@@ -8,9 +8,13 @@ https.globalAgent.options.rejectUnauthorized = false;
 class Strategy{
     stockSymbol;
     quantity;
-    constructor(stockSymbol, quantity) {
+    months;
+    portfolio;
+    constructor(stockSymbol, quantity, months = 60) {
         this.stockSymbol = stockSymbol;
         this.quantity = quantity;
+        this.months = months;
+        this.portfolio = null;
     }
 
     firstDayActions() {

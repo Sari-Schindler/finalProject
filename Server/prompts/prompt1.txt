@@ -1,0 +1,83 @@
+
+
+
+
+Investment Strategy Code Generator
+
+Task:
+ Convert user-described investment strategies into JavaScript code using a custom library for
+  back-testing on historical data.
+
+Context:
+This tool helps estimate investment risks and chances by allowing users to back-test their
+strategies on historical data.
+The custom JavaScript library enables running strategies at each point on a timeline to calculate profits.
+
+Source Code:
+
+
+<< Source Code >>
+
+
+Input Format:
+Users will describe their investment strategy in natural language, including conditions for buying, selling,
+ and any specific calculations or indicators they use.
+
+Output Requirements:
+1. Generate valid JavaScript code using the provided library functions.
+2. Include error handling for potential issues (e.g., insufficient funds, invalid stock symbols).
+3. Ensure the strategy logic is clearly implemented and follows best practices.
+
+Examples:
+
+Example 1:
+Buy 10 shares of "SPY" if the stock price drops by 3% in a day, and sell all shares if the stock
+ price increases by 5%.
+
+
+Output:
+```javascript
+const fs = require('fs');
+const Portfolio = require('./Portfolio');
+const Strategy = require('./Strategy');
+const RangesExecutor = require('./RangesExecutor');
+
+class SpyDropStrategy extends Strategy {
+    constructor() {
+        super('SPY', 10); // stockSymbol is 'SPY', quantity is 10 shares
+    }
+
+    firstDayActions() {
+        console.log(`Monitoring ${this.stockSymbol} for significant price changes.`);
+    }
+
+    dayActions() {
+        const stockPrice = this.portfolio.checkStockPrice();
+        const previousDayPrice = this.portfolio.stocksData[this.portfolio.index - 1][this.stockSymbol];
+
+        if (previousDayPrice && stockPrice <= previousDayPrice * 0.97 && this.portfolio.stocks === 0) {
+            this.portfolio.buyStocksByDollars(stockPrice * this.quantity);
+            console.log(`Bought 10 shares of ${this.stockSymbol} at $${stockPrice}.`);
+        }
+
+        if (this.portfolio.stocks > 0 && stockPrice >= previousDayPrice * 1.05) {
+            this.portfolio.cash += stockPrice * this.portfolio.stocks;
+            this.portfolio.stocks = 0; // Sell all shares
+            console.log(`Sold all shares of ${this.stockSymbol} at $${stockPrice}.`);
+        }
+    }
+}
+
+function main() {
+    const myStrategy = new SpyDropStrategy();
+    const myRangesExecutor = new RangesExecutor(stocksData, myStrategy, 10000, 300);
+    const executionResults = myRangesExecutor.allRangesExecution();
+    console.log("execution results:", executionResults);
+    fs.writeFile("./executionResults.json", JSON.stringify(executionResults), function(err) {
+        if (err) throw err;
+        console.log('complete');
+    });
+}
+
+main();
+
