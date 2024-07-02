@@ -314,5 +314,5 @@ class StockStrategyAnalyzer {
     }
 }
 
-module.exports = StockStrategyAnalyzer;
+export default StockStrategyAnalyzer;
 

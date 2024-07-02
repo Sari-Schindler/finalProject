@@ -1,7 +1,10 @@
-const yahooFinance = require('yahoo-finance2').default;
-const https = require('https');
+
 //const stocksData = require('./stocksHistoricalData.json');
-const stocksData = require('./stocksDataForTest.json')
+import https from 'https';
+import yahooFinance from 'yahoo-finance2';
+
+//import stocksData  from './stocksDataForTest.json';
+import exp from 'constants';
 
 https.globalAgent.options.rejectUnauthorized = false;
 
@@ -25,4 +28,4 @@ class Strategy{
         console.warn('dayActions() must be implemented');
     }
 }
-module.exports = Strategy;
+export default Strategy;

@@ -1,5 +1,5 @@
-const yahooFinance = require('yahoo-finance2').default;
-const https = require('https');
+import yahooFinance from 'yahoo-finance2';
+import https from 'https';
 
 //צריך לבדוק אם זה בעייתי: כשמגיעים ליום האחרון בהיסטוריה וכבר אין לאן להעלות את האינדקס הפונקציה getNextDate מדפיסה הודעה ולא מחזירה כלום
 https.globalAgent.options.rejectUnauthorized = false;
@@ -190,5 +190,4 @@ class Portfolio {
 
 }
 
-
-module.exports = Portfolio;
+export default Portfolio;
