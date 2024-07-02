@@ -11,26 +11,22 @@ const validateUserData = [
     //body('phone').matches(/^(?:0(?!([57]))(?:[23489] ?(?:\d ?){7}|\d ?(?:\d ?){7})|0([57])\d ?(?:\d ?){7}|(?:\+972|972|0)(?:\d ?(?:\d ?){7}|\d ?(?:\d ?){8}))$/).withMessage('Invalid phone number')
 ];
 
-const validatePostData = [
-    body('title').isLength({ max: 45 }).withMessage('Title must be at most 45 characters'),
-    body('body').isLength({ max: 280 }).withMessage('Body must be at most 280 characters')
-];
-
-// const validateAlbumData = [
-    
+// const validatePostData = [
+//     body('title').isLength({ max: 45 }).withMessage('Title must be at most 45 characters'),
+//     body('body').isLength({ max: 280 }).withMessage('Body must be at most 280 characters')
 // ];
 
-const validateTodoData = [
-    body('title').isLength({ max: 45 }).withMessage('Title must be at most 45 characters'),
-    body('completed').isBoolean().withMessage('Completed nust be boolean')
-];
+// const validateTodoData = [
+//     body('title').isLength({ max: 45 }).withMessage('Title must be at most 45 characters'),
+//     body('completed').isBoolean().withMessage('Completed nust be boolean')
+// ];
 
 
-const validateCommentData = [
-    body('name').isLength({ max: 45 }).withMessage('Name must be at most 45 characters'),
-    body('email').isEmail().withMessage('Invalid email'),
-    body('body').isLength({ max: 280 }).withMessage('Body must be at most 280 characters')
-];
+// const validateCommentData = [
+//     body('name').isLength({ max: 45 }).withMessage('Name must be at most 45 characters'),
+//     body('email').isEmail().withMessage('Invalid email'),
+//     body('body').isLength({ max: 280 }).withMessage('Body must be at most 280 characters')
+// ];
 
 function validate(req, res, next) {
     const errors = validationResult(req);
@@ -41,4 +37,4 @@ function validate(req, res, next) {
 }
 
 
-export { validateUserData, validateTodoData, validatePostData, validateCommentData,validate };
+export { validateUserData,validate };
