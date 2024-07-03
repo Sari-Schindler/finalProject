@@ -2,14 +2,15 @@
 import { LoginService } from "../services/loginService.js";
 import 'dotenv/config';
 import jwt from 'jsonwebtoken';
+import Cookies from 'js-cookie';
+
 
 const loginService = new LoginService();
 
 
 export class LoginController{
     
-    async login(req, res, next){
-        debugger;
+    async login(req, res, next){      
         const { email, password } = req.body;
         try {
             let user = await loginService.login(email, password);

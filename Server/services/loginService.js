@@ -3,20 +3,21 @@ import { createQuery, getByIdQuery } from './query.js'
 import bcrypt from 'bcrypt';
 
 export class LoginService{
+
     async login(email, password){
         try {
             const password1=password;
             const query = getByIdQuery('access', 'email');
             const [user] = await executeQuery(query, [email]);
-            if(user)
-                console.log('logged user',password1, user.password)
-            if (user && await bcrypt.compare(password1, user.password)) {
-                debugger
-                if (user && password1 == user.password) {
+            // if(user)
+                console.log('logged user',password1)
+                console.log("bcrypt     ", user.password)
+                const isMatch = await bcrypt.compare(password, user.password);
+                console.log("ism", isMatch)
+            if (user && isMatch) {
                 console.log("got user and compare psw")
-                delete user.psw; // Remove password from response
+                delete user.password; // Remove password from response
                 return user;
-            }
         }
             return null;
         } catch (error) {

@@ -25,6 +25,14 @@ export const submitFormService = {
       to: email,
       subject: 'Confirmation of Your Submission',
       text: `Thank you, ${name}, for your message. We will get back to you soon.`,
+      //  attachments: [
+      //     {
+      //       filename: 'logo.png', // Replace with your image filename
+      //       path:  '../Images/logo.png', // Replace with actual path to your image
+      //       cid: 'unique@kreata.ee' // Unique identifier
+      //     }
+      //   ]
     });
+    
   }
 };

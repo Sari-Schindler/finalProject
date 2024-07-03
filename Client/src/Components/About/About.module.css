@@ -1,0 +1,24 @@
+/* InvestorInfo.module.css */
+
+.investorInfo {
+    margin: 20px;
+    padding: 20px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+    max-width: 100%;
+    box-sizing: border-box; /* Ensures padding and border are included in width */
+}
+
+.investorInfo p {
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+@media (max-width: 600px) {
+    .investorInfo {
+        margin: 10px;
+        padding: 15px;
+    }
+}

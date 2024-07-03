@@ -1,11 +1,13 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import Home from "./Home";
+import Home from "../Components/Home/Home";
 import NotFound from "./NotFound";
-import Risks from "./Risks";
-import About from "./About";
+import Risks from "./Risks/Risks";
+import About from "./About/About";
 import Login from "./Login";
 import Register from "./Register";
 import Debts from "./Debts";
+import Contact from './Contact/Contact'
+import News from "./News/News";
 
 const Router = () => {
   return (
@@ -25,6 +27,9 @@ const Router = () => {
           <Route path="debts" element={<Debts />} />
           <Route path="about" element={<About />} />
           <Route path="risks" element={<Risks />} />
+          <Route path="contact" element={<Contact />} />
+          <Route path="news" element={<News/>} />
+
         </Route>
         
         {/* Catch-all route for 404 Not Found */}
