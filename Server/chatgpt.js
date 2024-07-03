@@ -1,0 +1,322 @@
+import axios from 'axios';
+import https from 'https';
+import dotenv from 'dotenv';
+
+// Load environment variables from .env file
+dotenv.config();
+
+
+const apiKey = '';
+const apiUrl = 'https://api.openai.com/v1/chat/completions';
+
+const promptDescription = `Task:
+Convert user-described investment strategies into JavaScript code using a custom library for
+ back-testing on historical data.
+ 
+Context:
+This tool helps estimate investment risks and chances by allowing users to back-test their
+strategies on historical data.
+The custom JavaScript library enables running strategies at each point on a timeline to calculate profits.
+
+Source Code:
+
+Portfolio:
+—-----------
+class Portfolio {
+   stocksData;
+   currentDate;
+   startDate
+   endDate;
+   index;
+   cash;
+   stocks;
+   strategy;
+   rangeExecutor;
+   constructor(stocksData, startDate = null, endDate = null, cash, index = 0) {
+       this.stocksData = stocksData;
+       this.startDate = startDate;
+       this.endDate = endDate;
+       this.currentDate = startDate;
+       this.index = index;
+       this.cash = cash;
+       this.stocks = 0;
+       //this.stocks = new Map();
+       this.strategy = null;
+       this.rangeExecutor = null;
+   }
+   setStrategy(strategy) {
+       this.strategy = strategy;
+       this.strategy.portfolio = this;
+   }
+   getStockData(date) {
+       return this.stocksData.find(day => day.date === date);
+   }
+   getNextDate() {
+       if (this.stocksData[this.index + 1] !== undefined) {
+           this.index++;
+           return this.stocksData[this.index].date;
+       } else {
+           console.log('No historical data available for the given date.');
+       }
+   }
+   convertDateToString(date) {
+       return date.toISOString().split('T')[0];
+   }
+   convertStringToDate(stringDate) {
+       const date =  new Date(stringDate);
+       if (!date.getTime()) {
+           throw new Error('Invalid date string');
+       }
+       return date;
+   }
+   isFirstDayOfMonth() {
+       if(this.convertStringToDate(this.stocksData[this.index].date).getMonth()
+           !== this.convertStringToDate(this.stocksData[this.index - 1].date).getMonth()
+       ) {
+           return true;
+       }
+       return false;
+   }
+   rangeExecution() {
+       const startValue = this.cash;
+       for (let date = this.startDate; date <= this.endDate; date = this.getNextDate()) {
+           this.currentDate = date;
+           this.strategy.dayActions();
+       }
+       const finalValue = this.checkStockPrice(this.strategy.stockSymbol) * this.stocks;
+       const investedMoney = startValue - this.cash;
+       const profit = finalValue - investedMoney;
+       return profit / investedMoney;
+   }
+   buyStocksByDollars(dollars) {
+       const stockCost = this.checkStockPrice();
+       if (stockCost === 0) {
+           console.log('No historical data available for the given date.');
+           return;
+       }
+       const stocksAmount = dollars / stockCost;
+       if (this.cash - dollars >= 0) {
+           this.cash -= dollars;
+           this.stocks += stocksAmount;
+       } else {
+           console.log('Not enough cash to buy the stocks.');
+       }
+   }
+   sellStocksByDollars(dollars) {
+       const stockCost = this.checkStockPrice();
+       if (stockCost === 0) {
+           console.log('No historical data available for the given date.');
+           return;
+       }
+       const stocksAmount = dollars / stockCost;
+       this.cash += dollars;
+       this.stocks -= stocksAmount;
+   }
+   sellAll(){
+       const stockCost = this.checkStockPrice();
+       if (stockCost === 0) {
+           console.log('No historical data available for the given date.');
+           return;
+       }
+       this.cash += this.stocks * stockCost;
+       this.stocks = 0;
+   }
+   checkStockPrice() {
+       const stockData = this.stocksData[this.index];
+       return stockData[this.strategy.stockSymbol];
+   }
+}
+export default Portfolio;
+—----------
+
+Strategy:
+—-----------
+class Strategy{
+   stockSymbol;
+   quantity;
+   months;
+   portfolio;
+   constructor(stockSymbol, quantity, months = 60) {
+       this.stockSymbol = stockSymbol;
+       this.quantity = quantity;
+       this.months = months;
+       this.portfolio = null;
+   }
+   firstDayActions() {
+       console.warn('firstDayActions() must be implemented');
+   }
+   dayActions() {
+       console.warn('dayActions() must be implemented');
+   }
+}
+export default Strategy;
+—----------
+
+rangeExecuter:
+—----------
+import Portfolio from './portfolio.js';
+class RangesExecutor {
+    stocksData;
+    portfolio;
+    strategy;
+    cash;
+    sampleSize;
+    constructor(stocksData, strategy, cash, sampleSize) {
+        this.stocksData = stocksData;
+        this.portfolio = null;
+        this.strategy = strategy;
+        this.cash = cash;
+        this.sampleSize = sampleSize;
+    }
+    setPortfolio(portfolio) {
+        this.portfolio = portfolio;
+        this.portfolio.rangeExecutor = this;
+    }
+    allRangesExecution() {
+        let profits = new Array(this.sampleSize);
+        let totalProfit = 0;
+        let executionsResults = new Array(this.sampleSize);
+        let indexJump = Math.floor(this.stocksData.length / this.sampleSize);
+        if (indexJump <= 1){
+            indexJump = 1
+        }
+        let sequentialIndex = 0
+        for (let index = 1; index < this.stocksData.length - indexJump; index += indexJump) {
+            let lastDay = this.findLastDay(index);
+            if(lastDay > this.convertStringToDate(this.stocksData[this.stocksData.length - 1].date)){
+                break;
+            }
+            this.portfolio = new Portfolio(this.stocksData, this.stocksData[index].date, lastDay, this.cash, index);
+            this.portfolio.setStrategy(this.strategy);
+            if (index === 0) {
+                this.portfolio.strategy.firstDayActions();
+            }
+            const profit = this.portfolio.rangeExecution();
+            if (profit) {
+                if(profit === -1){
+                }
+                profits[sequentialIndex] = profit;
+                totalProfit += profits[sequentialIndex];
+                executionsResults[sequentialIndex] = {date: this.stocksData[index].date, results: profits[sequentialIndex]};
+                sequentialIndex++;
+            }
+        }
+        return executionsResults;
+    }
+    findLastDay(index) {
+        let lastDay = this.convertStringToDate(this.stocksData[index].date);
+        lastDay.setMonth(lastDay.getMonth() + this.strategy.months);
+        lastDay = this.convertDateToString(lastDay);
+        return lastDay;
+    }
+    convertDateToString(date) {
+        return date.toISOString().split('T')[0];
+    }
+    convertStringToDate(stringDate) {
+        return new Date(stringDate);
+    }
+}
+export default RangesExecutor;
+—----------
+
+Input Format:
+Users will describe their investment strategy in natural language, including conditions for buying, selling,
+and any specific calculations or indicators they use.
+
+Output Requirements:
+1. Generate valid JavaScript code using the provided library functions.
+2. Include error handling for potential issues (e.g., insufficient funds, invalid stock symbols).
+3. Ensure the strategy logic is clearly implemented and follows best practices.
+4.return only javascript code that i can take and run without any addition words
+
+Examples:
+
+Example 1:
+Buy 10 shares of "SPY" if the stock price drops by 3% in a day, and sell all shares if the stock
+price increases by 5%.
+Output:
+class SpyDropStrategy extends Strategy {
+   constructor() {
+       super('SPY', 10); // stockSymbol is 'SPY', quantity is 10 shares
+   }
+   firstDayActions() {
+       console.log("Monitoring ", this.stockSymbol, "for significant price changes.");
+   }
+   dayActions() {
+       const stockPrice = this.portfolio.checkStockPrice();
+       const previousDayPrice = this.portfolio.stocksData[this.portfolio.index - 1][this.stockSymbol];
+       if (previousDayPrice && stockPrice <= previousDayPrice * 0.97 && this.portfolio.stocks === 0) {
+           this.portfolio.buyStocksByDollars(stockPrice * this.quantity);
+       }
+       if (this.portfolio.stocks > 0 && stockPrice >= previousDayPrice * 1.05) {
+           this.portfolio.cash += stockPrice * this.portfolio.stocks;
+           this.portfolio.stocks = 0; // Sell all shares
+           console.log("Sold all shares of ", this.stockSymbol," at ",stockPrice);
+       }
+   }
+}
+function main() {
+   const myStrategy = new SpyDropStrategy();
+   const myRangesExecutor = new RangesExecutor(stocksData, myStrategy, 10000, 300);
+   const executionResults = myRangesExecutor.allRangesExecution();
+   console.log("execution results:", executionResults);
+   fs.writeFile("./executionResults.json", JSON.stringify(executionResults), function(err) {
+       if (err) throw err;
+       console.log('complete');
+   });
+}
+main();
+`;
+
+function getChatGptResponse(userInput) {
+    const userMessage = {
+        role: 'user',
+        content: `User Input: ${userInput}`
+    };
+
+    const data = {
+        model: 'gpt-3.5',  // Use the appropriate model, such as 'gpt-4'
+        messages: [
+            { role: 'system', content: promptDescription },
+            userMessage
+        ]
+    };
+
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`
+    };
+    const axiosInstance = axios.create({
+        httpsAgent: new https.Agent({
+            rejectUnauthorized: false
+        })
+    });
+
+
+    axiosInstance.post(apiUrl, data, { headers })
+        .then(response => {
+            const responseContent = response.data.choices[0].message.content;
+            const usage = response.data.usage;
+            const promptTokens = usage.prompt_tokens;
+            const completionTokens = usage.completion_tokens;
+
+            console.log('ChatGPT Response:', responseContent);
+            console.log('Prompt Tokens:', promptTokens);
+            console.log('Completion Tokens:', completionTokens);
+
+            // Calculate the cost
+            const costPerTokenPrompt = 0.03 / 1000;
+            const costPerTokenCompletion = 0.06 / 1000;
+            const totalCost = (promptTokens * costPerTokenPrompt) + (completionTokens * costPerTokenCompletion);
+
+            console.log('Estimated Cost:', totalCost);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+
+
+// Example usage
+const userInvestmentStrategy = 'Buy 10 shares of "SPY" if the stock price drops by 3% in a day, and sell all shares if the stock price increases by 5%.';
+getChatGptResponse(userInvestmentStrategy);
