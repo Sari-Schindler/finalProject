@@ -6,8 +6,8 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 
-const apiKey = '';
-const apiUrl = 'https://api.openai.com/v1/chat/completions';
+//const apiKey = '';
+const apiUrl = `https://api.openai.com/v1/chat/completions`;
 
 const promptDescription = `Task:
 Convert user-described investment strategies into JavaScript code using a custom library for
@@ -275,7 +275,7 @@ function getChatGptResponse(userInput) {
     };
 
     const data = {
-        model: 'gpt-3.5',  // Use the appropriate model, such as 'gpt-4'
+        model: 'gpt-3.5-turbo',  // Use the appropriate model, such as 'gpt-4'
         messages: [
             { role: 'system', content: promptDescription },
             userMessage
