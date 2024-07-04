@@ -20,7 +20,7 @@ app.use(express.json());
 
 app.get('/example', (req, res) => {
     try {
-        console.log("app server")
+      console.log("app server")
       const executionResults = JSON.parse(fs.readFileSync('./executionResults.json', 'utf8'));
       res.json(executionResults); // Send JSON response
     } catch (error) {

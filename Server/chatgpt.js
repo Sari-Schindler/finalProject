@@ -227,7 +227,7 @@ Output Requirements:
 1. Generate valid JavaScript code using the provided library functions.
 2. Include error handling for potential issues (e.g., insufficient funds, invalid stock symbols).
 3. Ensure the strategy logic is clearly implemented and follows best practices.
-4.return only javascript code that i can take and run without any addition words
+4.return only javascript code that I can take and run without any addition words
 
 Examples:
 

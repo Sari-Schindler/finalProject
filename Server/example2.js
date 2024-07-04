@@ -1,7 +1,7 @@
 import fs from 'fs';
-import Portfolio from './Portfolio.js';
-import Strategy from './Strategy.js';
-import RangesExecutor from './RangesExecutor.js';
+import Portfolio from './portfolio.js';
+import Strategy from './strategy.js';
+import RangesExecutor from './rangesExecutor.js';
 //import stocksData from './stocksHistoricalData.json';
 import stocksData from './stocksHistoricalData.json' assert { type: 'json' };
 
