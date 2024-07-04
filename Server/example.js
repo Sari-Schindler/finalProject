@@ -30,7 +30,7 @@ class BuyEachMonthStrategy extends Strategy {
 }
 
 const myStrategy = new BuyEachMonthStrategy('SPY', 1, 60);
-const myRangesExecutor = new RangesExecutor(stocksData.default, myStrategy, 1000000, 4000);
+const myRangesExecutor = new RangesExecutor(stocksData, myStrategy, 1000000, 400);
 const executionResults = myRangesExecutor.allRangesExecution();
 
 console.log('Execution results:', executionResults);
@@ -42,5 +42,6 @@ fs.writeFile('./executionResults.json', JSON.stringify(executionResults), (err) 
 
     
 }
+example();
 
 module.exports = example;
