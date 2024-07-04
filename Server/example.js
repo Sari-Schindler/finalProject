@@ -1,15 +1,16 @@
-import yahooFinance from 'yahoo-finance2';
-import  Portfolio  from './portfolio.js'; // Use named import
-import Strategy from './strategy.js';   // Use named import
-import RangesExecutor from './rangesExecutor.js'; // Use named import
-import fs from 'fs';
-import path from 'path';
+//import yahooFinance from 'yahoo-finance2';
+const  Portfolio  = require('./portfolio.js'); // Use named import
+const fs = require("fs");
+const Strategy = require('./Strategy.js');
+const RangesExecutor = require('./RangesExecutor.js');
+const  path = require("path");
+const stocksData = require('./stocksHistoricalData.json');
+
 
 async function example(){
     
 //https.globalAgent.options.rejectUnauthorized = false;
 
-const stocksData = await import('./stocksHistoricalData.json', { assert: { type: 'json' } });
 
 class BuyEachMonthStrategy extends Strategy {
     constructor(stockSymbol, quantity, months) {
@@ -42,4 +43,4 @@ fs.writeFile('./executionResults.json', JSON.stringify(executionResults), (err) 
     
 }
 
-export default example
+module.exports = example;

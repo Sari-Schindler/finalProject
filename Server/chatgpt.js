@@ -1,12 +1,12 @@
-import axios from 'axios';
-import https from 'https';
-import dotenv from 'dotenv';
+const axios = require('axios');
+const https = require('https');
+const dotenv = require('dotenv');
+const fs = require('fs');
 
-// Load environment variables from .env file
 dotenv.config();
 
 
-//const apiKey = '';
+const apiKey = '';
 const apiUrl = `https://api.openai.com/v1/chat/completions`;
 
 const promptDescription = `Task:
@@ -305,18 +305,22 @@ function getChatGptResponse(userInput) {
             console.log('Completion Tokens:', completionTokens);
 
             // Calculate the cost
-            const costPerTokenPrompt = 0.03 / 1000;
-            const costPerTokenCompletion = 0.06 / 1000;
-            const totalCost = (promptTokens * costPerTokenPrompt) + (completionTokens * costPerTokenCompletion);
+            const costPerToken = 0.002 / 1000;
+            const totalCost = (promptTokens + completionTokens) * costPerToken;
+
 
             console.log('Estimated Cost:', totalCost);
+
+            fs.writeFile('gptResponse.txt', responseContent, (err) => {
+                if (err) {
+                    console.error('Error writing to file:', err);
+                } else {
+                    console.log('Response content written to file successfully.');
+                }
+            });
         })
         .catch(error => {
             console.error('Error:', error);
         });
 }
-
-
-// Example usage
-const userInvestmentStrategy = 'Buy 10 shares of "SPY" if the stock price drops by 3% in a day, and sell all shares if the stock price increases by 5%.';
-getChatGptResponse(userInvestmentStrategy);
+module.exports = getChatGptResponse;

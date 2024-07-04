@@ -1,5 +1,4 @@
-import Portfolio from './portfolio.js';
-
+const Portfolio = require('./Portfolio.js');
 let runStrCount = 0;
 let totalTime = 0;
 
@@ -93,4 +92,4 @@ class RangesExecutor {
 
 }
 
-export default RangesExecutor;
+module.exports = RangesExecutor;

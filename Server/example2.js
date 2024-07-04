@@ -1,9 +1,9 @@
-import fs from 'fs';
-import Portfolio from './Portfolio.js';
-import Strategy from './Strategy.js';
-import RangesExecutor from './RangesExecutor.js';
-//import stocksData from './stocksHistoricalData.json';
-import stocksData from './stocksHistoricalData.json' assert { type: 'json' };
+const  Portfolio  = require('./portfolio.js'); // Use named import
+const fs = require("fs");
+const Strategy = require('./Strategy.js');
+const RangesExecutor = require('./RangesExecutor.js');
+const  path = require("path");
+const stocksData = require('./stocksHistoricalData.json');
 
 class SpyDropStrategy extends Strategy {
     constructor() {
