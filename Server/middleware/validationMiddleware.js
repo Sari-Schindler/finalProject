@@ -1,4 +1,4 @@
-import {body, validationResult } from 'express-validator';
+const { body, validationResult } = require('express-validator');
 
 const validateUserData = [
     //body('name').isLength({ max: 45 }).withMessage('Name must be at most 45 characters'),
@@ -21,7 +21,6 @@ const validateUserData = [
 //     body('completed').isBoolean().withMessage('Completed nust be boolean')
 // ];
 
-
 // const validateCommentData = [
 //     body('name').isLength({ max: 45 }).withMessage('Name must be at most 45 characters'),
 //     body('email').isEmail().withMessage('Invalid email'),
@@ -36,5 +35,4 @@ function validate(req, res, next) {
     next();
 }
 
-
-export { validateUserData,validate };
+module.exports = { validateUserData, validate };
