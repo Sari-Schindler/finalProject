@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Chart, registerables } from 'chart.js';
 import Cookies from 'js-cookie';
 import style from './Home.module.css';
@@ -12,6 +13,7 @@ const Home = () => {
   const [chartData, setChartData] = useState(null);
   const navigate = useNavigate();
 
+
   async function fetchAndDisplayChart() {
     try {
       const response = await fetch('http://localhost:3000/example', {
@@ -20,15 +22,28 @@ const Home = () => {
         },
       });
       const data = await response.json();
-
+  
       if (!data || data.length === 0) {
         console.error('No data received');
         return;
       }
-
-      const labels = data.map(result => result.date);
-      const values = data.map(result => result.results);
-
+  
+      // Log the entire data array to inspect its structure
+      console.log('Fetched data:', data);
+  
+      // Filter out any items that are null or don't have the expected properties
+      const validData = data.filter(item => item && item.date && item.results);
+  
+      // Log any items that were filtered out
+      const invalidData = data.filter(item => !item || !item.date || !item.results);
+      if (invalidData.length > 0) {
+        console.warn('Invalid data items:', invalidData);
+      }
+  
+      // Map the filtered data to get labels and values
+      const labels = validData.map(result => result.date);
+      const values = validData.map(result => result.results);
+  
       const ctx = document.getElementById('executionResultsChart').getContext('2d');
       new Chart(ctx, {
         type: 'line',
@@ -79,11 +94,13 @@ const Home = () => {
           },
         }
       });
-
+  
     } catch (error) {
       console.error('Error fetching or displaying chart:', error);
     }
   }
+  
+  
 
   function clearAllCookies() {
     const cookies = document.cookie.split(";");
@@ -102,13 +119,9 @@ const Home = () => {
     // Clear all cookies
     clearAllCookies();
 
-    // Clear history stack
-    window.history.pushState(null, null, '/');
-    window.history.pushState(null, null, '/login');
-    window.history.go(1);
-
     // Navigate to the login page and replace history
     navigate('/login', { replace: true });
+    window.location.reload();
   }
 
   return (
@@ -123,7 +136,8 @@ const Home = () => {
           <NavLink to="about" className={style.nav}>About</NavLink>
           <NavLink to="news" className={style.nav}>News</NavLink>
           <NavLink to="contact" className={style.nav}>Contact us</NavLink>
-          <NavLink to="displayusers" className={style.nav}>Display Users</NavLink>
+          {/* {isManager && <NavLink to="displayusers" className={style.nav}>display users</NavLink>} */}
+          <NavLink to="displayusers" className={style.nav}>display users</NavLink>
           <a href="#" className={style.nav} onClick={handleLogout}>Log out</a>
         </nav>
       </header>
