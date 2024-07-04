@@ -19,9 +19,8 @@ class SpyDropStrategy extends Strategy {
             this.portfolio.buyStocksByDollars(stockPrice * this.quantity);
         }
         if (this.portfolio.stocks > 0 && stockPrice >= previousDayPrice * 1.05) {
-            this.portfolio.cash += stockPrice * this.portfolio.stocks;
-            this.portfolio.stocks = 0;
-            console.log("Sold all shares of ", this.stockSymbol," at ",stockPrice);
+            this.portfolio.sellAll();
+            console.log("Sold all shares of ", this.stockSymbol," at ",stockPrice, "each");
         }
     }
 }

@@ -12,6 +12,7 @@ class Portfolio {
     stocks;
     strategy;
     rangeExecutor;
+    investedMoney;
 
     constructor(stocksData, startDate = null, endDate = null, cash, index = 0) {
         this.stocksData = stocksData;
@@ -24,6 +25,7 @@ class Portfolio {
         //this.stocks = new Map();
         this.strategy = null;
         this.rangeExecutor = null;
+        this.investedMoney = 0;
     }
 
     setStrategy(strategy) {
@@ -91,11 +93,10 @@ class Portfolio {
         }
         console.log("left cash:", this.cash);
 
-        const finalValue = this.checkStockPrice(this.strategy.stockSymbol) * this.stocks;
-        const investedMoney = startValue - this.cash;
-        const profit = finalValue - investedMoney;
-        console.log("invested: ", investedMoney, "profit: ", profit, "final value: ", finalValue, "stocks amount: ", this.stocks);
-        return profit / investedMoney;
+        const finalValue = this.cash  + this.checkStockPrice(this.strategy.stockSymbol) * this.stocks;
+        const profit = finalValue - startValue;
+        console.log("invested: ", this.investedMoney, "profit: ", profit, "final value: ", finalValue, "stocks amount: ", this.stocks);
+        return profit / this.investedMoney;
     }
 
 
@@ -110,8 +111,9 @@ class Portfolio {
         if (this.cash - dollars >= 0) {
             this.cash -= dollars;
             this.stocks += stocksAmount;
+            this.investedMoney += dollars;
             //this.addStock();
-           // console.log(`Bought ${stocksAmount} shares of ${this.strategy.stockSymbol} for $${stockCost} each.`);
+            console.log(`Bought ${stocksAmount} shares of ${this.strategy.stockSymbol} for $${stockCost} each.`);
         } else {
             console.log('Not enough cash to buy the stocks.');
         }
