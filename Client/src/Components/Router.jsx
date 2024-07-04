@@ -3,11 +3,12 @@ import Home from "../Components/Home/Home";
 import NotFound from "./NotFound";
 import Risks from "./Risks/Risks";
 import About from "./About/About";
-import Login from "./Login";
-import Register from "./Register";
+import Login from "./Login/Login";
+import Register from "./Register/Register";
 import Debts from "./Debts";
 import Contact from './Contact/Contact'
 import News from "./News/News";
+import DisplayUsers from './DisplayUsers'
 
 const Router = () => {
   return (
@@ -29,6 +30,7 @@ const Router = () => {
           <Route path="risks" element={<Risks />} />
           <Route path="contact" element={<Contact />} />
           <Route path="news" element={<News/>} />
+          <Route path="displayusers" element={<DisplayUsers/>} />
 
         </Route>
         

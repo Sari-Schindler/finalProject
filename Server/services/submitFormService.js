@@ -19,20 +19,23 @@ export const submitFormService = {
       text: `You received a new message from ${name} (${email}): ${message}`,
     });
 
-    // Send confirmation email to user
+    // Send confirmation email to user with embedded image
     await transporter.sendMail({
       from: process.env.MANAGER_EMAIL,
       to: email,
       subject: 'Confirmation of Your Submission',
-      text: `Thank you, ${name}, for your message. We will get back to you soon.`,
-      //  attachments: [
-      //     {
-      //       filename: 'logo.png', // Replace with your image filename
-      //       path:  '../Images/logo.png', // Replace with actual path to your image
-      //       cid: 'unique@kreata.ee' // Unique identifier
-      //     }
-      //   ]
+      html: `
+        <p>Thank you, ${name}, for your message. We will get back to you soon.</p>
+        <p>Here is our logo:</p>
+        <img src="cid:unique@nodemailer.com" alt="Logo" />
+      `,
+      attachments: [
+        {
+          filename: 'logo.png',
+          path: '../Client/Images/logo.png',
+          cid: 'unique@nodemailer.com' // Use this CID to reference the image in the HTML
+        }
+      ]
     });
-    
   }
 };

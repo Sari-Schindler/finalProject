@@ -1,10 +1,13 @@
-import { useState } from "react";
+import React, { useState, useContext } from "react"; // Import useContext from React
 import { Link, useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
+import { userContext } from "../../App.jsx";
+import style from './Login.module.css';
 
 const Login = () => {
   const [errorMessage, setErrorMessage] = useState("");
-  // const { currentUser, setCurrentUser } = useContext(userContext);
+  const { currentUser, setCurrentUser } = useContext(userContext);
+
   const navigate = useNavigate();
 
   async function handleFormSubmit(event) {
@@ -48,7 +51,6 @@ const Login = () => {
         },
       });
   
-      console.log('Response status:', response.status);
       if (response.ok) {
         const result = await response.json();
         return result[0];
@@ -63,26 +65,25 @@ const Login = () => {
   
 
   function navigateToHomePage(userDetails) {
-    // localStorage.setItem("currentUser", JSON.stringify(userDetails));
     navigate("/home");
-    // setCurrentUser(userDetails);
+    localStorage.setItem("currentUser", JSON.stringify(userDetails.type));
+    setCurrentUser(userDetails);
   }
 
   return (
-    <>
-      <div>
-        <h1>Please Log In</h1>
-        <form onSubmit={handleFormSubmit}>
-          <input name="email" type="text" placeholder="email" required />
-          <input name="password" type="password" placeholder="password" required />
-          <button type="submit">Submit</button>
-        </form>
-        <p>{errorMessage}</p>
-        <p>
-          <Link to={"/register"}>sign up</Link>
-        </p>
-      </div>
-    </>
+    <div className={style.container}>
+      <img src="../Images/logo.png" alt="Logo" className={style.logo} />
+      <h1 className={style.header}>Please Log In</h1>
+      <form onSubmit={handleFormSubmit} className={style.form}>
+        <input name="email" type="text" placeholder="Email" required className={style.input} />
+        <input name="password" type="password" placeholder="Password" required className={style.input} />
+        <button type="submit" className={style.button}>Submit</button>
+      </form>
+      {errorMessage && <p className={style.errorMessage}>{errorMessage}</p>}
+      <p>
+        <Link to="/register" className={style.link}>Sign up</Link>
+      </p>
+    </div>
   );
 };
 

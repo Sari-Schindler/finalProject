@@ -1,14 +1,17 @@
-import React, { useState } from "react";
-import { NavLink, Outlet } from "react-router-dom";
+import React, { useState, useContext, useEffect } from "react";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { Chart, registerables } from 'chart.js';
 import Cookies from 'js-cookie';
-import style from './Home.module.css'
+import style from './Home.module.css';
+import { userContext } from "../../App"; // Assuming userContext is defined in App.jsx or a separate file
 
 Chart.register(...registerables);
 
-export default function Home() {
+const Home = () => {
+  const { currentUser, setCurrentUser } = useContext(userContext);
   const [chartData, setChartData] = useState(null);
-  
+  const navigate = useNavigate();
+
   async function fetchAndDisplayChart() {
     try {
       const response = await fetch('http://localhost:3000/example', {
@@ -17,24 +20,18 @@ export default function Home() {
         },
       });
       const data = await response.json();
-      console.log("**********************************************************");
-      console.log("Response:", response);
-      console.log("Data:", data);
 
       if (!data || data.length === 0) {
         console.error('No data received');
         return;
       }
 
-      const labels = data.map(result => result.date); // Mapping 'date' to labels
-      const values = data.map(result => result.results); // Mapping 'results' to values
-
-      console.log("Labels:", labels);
-      console.log("Values:", values);
+      const labels = data.map(result => result.date);
+      const values = data.map(result => result.results);
 
       const ctx = document.getElementById('executionResultsChart').getContext('2d');
       new Chart(ctx, {
-        type: 'line', // Line chart type
+        type: 'line',
         data: {
           labels: labels,
           datasets: [{
@@ -88,9 +85,35 @@ export default function Home() {
     }
   }
 
+  function clearAllCookies() {
+    const cookies = document.cookie.split(";");
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i];
+      const eqPos = cookie.indexOf("=");
+      const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+      document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+    }
+  }
+
+  function handleLogout() {
+    // Clear local storage
+    localStorage.clear();
+
+    // Clear all cookies
+    clearAllCookies();
+
+    // Clear history stack
+    window.history.pushState(null, null, '/');
+    window.history.pushState(null, null, '/login');
+    window.history.go(1);
+
+    // Navigate to the login page and replace history
+    navigate('/login', { replace: true });
+  }
+
   return (
     <>
-        <header className={style.head1}>
+      <header className={style.head1}>
         <div className={style.logoContainer}>
           <img src="../Images/logo.png" alt="Logo" className={style.logo} />
         </div>
@@ -100,15 +123,14 @@ export default function Home() {
           <NavLink to="about" className={style.nav}>About</NavLink>
           <NavLink to="news" className={style.nav}>News</NavLink>
           <NavLink to="contact" className={style.nav}>Contact us</NavLink>
+          <NavLink to="displayusers" className={style.nav}>Display Users</NavLink>
+          <a href="#" className={style.nav} onClick={handleLogout}>Log out</a>
         </nav>
       </header>
-
 
       <button onClick={fetchAndDisplayChart} className={style.ShowGraph}>Show Graph</button>
 
       <h1>Home</h1>
-
-
 
       <div className="App">
         <h1>Stock Data Analysis</h1>
@@ -118,4 +140,6 @@ export default function Home() {
       <Outlet />
     </>
   );
-}
+};
+
+export default Home;
