@@ -1,10 +1,10 @@
-import { executeQuery } from './executeQuery.js';
-import {getByIdQuery, getQuery, deleteQuery, updateQuery, createQuery, softDeleteQuery } from './query.js'
+const { executeQuery } = require('./executeQuery.js');
+const { getByIdQuery, getQuery, deleteQuery, updateQuery, createQuery, softDeleteQuery } = require('./query.js');
 
-export class RegisterService {
+class RegisterService {
 
     async getUsers(queryParams) {
-        const queryUser = getQuery('users',queryParams, true);
+        const queryUser = getQuery('users', queryParams, true);
         const result = await executeQuery(queryUser.query, queryUser.params);
         return result;
     }
@@ -14,12 +14,10 @@ export class RegisterService {
         const queryAccess = createQuery('access', "email, password", "?,?");
         const userResult =  await executeQuery(queryUser, [userItem.type, userItem.username, userItem.email]);
         const accessResult =  await executeQuery(queryAccess, [userItem.email, userItem.password]);
-        return {userResult, accessResult};
-
+        return { userResult, accessResult };
     }
-    
 }
 
+const usersColumns = "type =?, userName =?, email=?";
 
-const usersColumns = "type =?, userName =?, email=?"
-
+module.exports = { RegisterService, usersColumns };

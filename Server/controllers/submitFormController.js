@@ -1,6 +1,6 @@
-import { submitFormService } from "../services/submitFormService.js";
+const { submitFormService } = require("../services/submitFormService.js");
 
-export const submitFormController = {
+module.exports.submitFormController = {
   async submitForm(req, res) {
     try {
       const { name, email, message } = req.body;

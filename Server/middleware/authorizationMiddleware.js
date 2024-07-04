@@ -1,14 +1,12 @@
-import { query } from "express";
+const { query } = require('express');
 
-const authorizeUser = (data, user,res, next) => {
+const authorizeUser = (data, user, res, next) => {
     console.log(user);
-    console.log("start autorizeUser", user,data)
+    console.log("start authorizeUser", user, data);
     if (user !== data) {
         return res.status(403).json({ message: "Forbidden" });
     }
-    console.log("pass autorizeUser")
+    console.log("pass authorizeUser");
 };
 
-
-
-export { authorizeUser};
+module.exports = { authorizeUser };

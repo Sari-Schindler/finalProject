@@ -1,5 +1,4 @@
-import { createConnection } from './db.js';
-
+const { createConnection } = require('./db.js');
 
 async function executeQuery(query, params) {
   let results;
@@ -11,7 +10,7 @@ async function executeQuery(query, params) {
     console.log("query executed successfully:", results);
   } catch (err) {
     console.log("error executing query:", err);
-    throw `error executing query: ${err}`
+    throw `error executing query: ${err}`;
   } finally {
     await connection.end();
     console.log("connection closed");
@@ -20,4 +19,4 @@ async function executeQuery(query, params) {
   return results;
 }
 
-export { executeQuery };
+module.exports = { executeQuery };

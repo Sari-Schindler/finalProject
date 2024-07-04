@@ -1,7 +1,7 @@
-import nodemailer from "nodemailer";
-import 'dotenv/config';
+const nodemailer = require("nodemailer");
+require('dotenv').config();
 
-export const submitFormService = {
+const submitFormService = {
   async sendEmails({ name, email, message }) {
     let transporter = nodemailer.createTransport({
       service: 'Gmail',
@@ -39,3 +39,5 @@ export const submitFormService = {
     });
   }
 };
+
+module.exports = { submitFormService };

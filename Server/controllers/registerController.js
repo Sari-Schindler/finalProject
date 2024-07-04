@@ -1,12 +1,11 @@
-import { RegisterService } from "../services/registerService.js";
-import 'dotenv/config';
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
+const { RegisterService } = require("../services/registerService.js");
+require('dotenv').config();
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 
 const registerService = new RegisterService();
 
-export class RegisterController {
-
+class RegisterController {
     async register(req, res, next) {
         try {
             console.log("registerController");
@@ -44,7 +43,7 @@ export class RegisterController {
 
     async existUser(req, res, next) {
         try {
-            console.log("exisetUser func");
+            console.log("existUser func");
             const { username, email } = req.query;
 
             let existUsername = await registerService.getUsers({ username });
@@ -70,3 +69,5 @@ export class RegisterController {
         }
     }
 }
+
+module.exports = { RegisterController };
