@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { Chart, registerables } from 'chart.js';
@@ -11,12 +11,12 @@ Chart.register(...registerables);
 const Home = () => {
   const { currentUser, setCurrentUser } = useContext(userContext);
   const [chartData, setChartData] = useState(null);
+  const [inputValue, setInputValue] = useState('');
   const navigate = useNavigate();
 
-
-  async function fetchAndDisplayChart() {
+  async function fetchAndDisplayChart(endpoint) {
     try {
-      const response = await fetch('http://localhost:3000/example', {
+      const response = await fetch(`http://localhost:3000/${endpoint}`, {
         headers: {
           'Authorization': Cookies.get('token')
         },
@@ -28,24 +28,23 @@ const Home = () => {
         return;
       }
   
-      // Log the entire data array to inspect its structure
       console.log('Fetched data:', data);
   
-      // Filter out any items that are null or don't have the expected properties
       const validData = data.filter(item => item && item.date && item.results);
   
-      // Log any items that were filtered out
       const invalidData = data.filter(item => !item || !item.date || !item.results);
       if (invalidData.length > 0) {
         console.warn('Invalid data items:', invalidData);
       }
   
-      // Map the filtered data to get labels and values
       const labels = validData.map(result => result.date);
       const values = validData.map(result => result.results);
   
       const ctx = document.getElementById('executionResultsChart').getContext('2d');
-      new Chart(ctx, {
+      if (chartData) {
+        chartData.destroy(); // Destroy existing chart instance if it exists
+      }
+      const newChart = new Chart(ctx, {
         type: 'line',
         data: {
           labels: labels,
@@ -95,11 +94,31 @@ const Home = () => {
         }
       });
   
+      setChartData(newChart); // Store the chart instance in state
     } catch (error) {
       console.error('Error fetching or displaying chart:', error);
     }
   }
   
+  async function handleInputSubmit() {
+    try {
+      const response = await fetch('http://localhost:3000/strategy', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': Cookies.get('token')
+        },
+        body: JSON.stringify({ userInput: inputValue }) // Ensure the key matches the one expected on the server-side
+      });
+      const result = await response.json();
+      console.log('Server response:', result);
+      
+      // Display the strategy response as a chart
+      fetchAndDisplayChart('strategy'); // Fetch and display chart using strategy endpoint
+    } catch (error) {
+      console.error('Error submitting data:', error);
+    }
+  }
   
 
   function clearAllCookies() {
@@ -113,13 +132,8 @@ const Home = () => {
   }
 
   function handleLogout() {
-    // Clear local storage
     localStorage.clear();
-
-    // Clear all cookies
     clearAllCookies();
-
-    // Navigate to the login page and replace history
     navigate('/login', { replace: true });
     window.location.reload();
   }
@@ -136,19 +150,28 @@ const Home = () => {
           <NavLink to="about" className={style.nav}>About</NavLink>
           <NavLink to="news" className={style.nav}>News</NavLink>
           <NavLink to="contact" className={style.nav}>Contact us</NavLink>
-          {/* {isManager && <NavLink to="displayusers" className={style.nav}>display users</NavLink>} */}
           <NavLink to="displayusers" className={style.nav}>display users</NavLink>
           <a href="#" className={style.nav} onClick={handleLogout}>Log out</a>
         </nav>
       </header>
 
-      <button onClick={fetchAndDisplayChart} className={style.ShowGraph}>Show Graph</button>
+      <button onClick={() => fetchAndDisplayChart('example')} className={style.ShowGraph}>Show Example Graph</button>
 
       <h1>Home</h1>
 
       <div className="App">
         <h1>Stock Data Analysis</h1>
         <canvas id="executionResultsChart" width="400" height="200"></canvas>
+      </div>
+
+      <div>
+        <input 
+          type="text" 
+          value={inputValue} 
+          onChange={(e) => setInputValue(e.target.value)} 
+          placeholder="Enter text here"
+        />
+        <button onClick={handleInputSubmit}>Submit</button>
       </div>
 
       <Outlet />

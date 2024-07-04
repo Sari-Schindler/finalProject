@@ -1,4 +1,4 @@
-const Strategy = require('../Strategy.js');
+//const Strategy = require('../Strategy.js');
 const RangesExecutor = require('../RangesExecutor.js');
 const stocksData = require('../stocksHistoricalData.json');
 const axios = require('axios');
