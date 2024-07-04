@@ -1,18 +1,7 @@
-const axios = require('axios');
-const https = require('https');
-const dotenv = require('dotenv');
-const fs = require('fs');
-
-dotenv.config();
-
-
-const apiKey = '';
-const apiUrl = `https://api.openai.com/v1/chat/completions`;
-
-const promptDescription = `Task:
+Task:
 Convert user-described investment strategies into JavaScript code using a custom library for
  back-testing on historical data.
- 
+
 Context:
 This tool helps estimate investment risks and chances by allowing users to back-test their
 strategies on historical data.
@@ -266,61 +255,3 @@ function main() {
    });
 }
 main();
-`;
-
-function getChatGptResponse(userInput) {
-    const userMessage = {
-        role: 'user',
-        content: `User Input: ${userInput}`
-    };
-
-    const data = {
-        model: 'gpt-3.5-turbo',  // Use the appropriate model, such as 'gpt-4'
-        messages: [
-            { role: 'system', content: promptDescription },
-            userMessage
-        ]
-    };
-
-    const headers = {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`
-    };
-    const axiosInstance = axios.create({
-        httpsAgent: new https.Agent({
-            rejectUnauthorized: false
-        })
-    });
-
-
-    axiosInstance.post(apiUrl, data, { headers })
-        .then(response => {
-            const responseContent = response.data.choices[0].message.content;
-            const usage = response.data.usage;
-            const promptTokens = usage.prompt_tokens;
-            const completionTokens = usage.completion_tokens;
-
-            console.log('ChatGPT Response:', responseContent);
-            console.log('Prompt Tokens:', promptTokens);
-            console.log('Completion Tokens:', completionTokens);
-
-            // Calculate the cost
-            const costPerToken = 0.002 / 1000;
-            const totalCost = (promptTokens + completionTokens) * costPerToken;
-
-
-            console.log('Estimated Cost:', totalCost);
-
-            fs.writeFile('gptResponse.txt', responseContent, (err) => {
-                if (err) {
-                    console.error('Error writing to file:', err);
-                } else {
-                    console.log('Response content written to file successfully.');
-                }
-            });
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-}
-module.exports = getChatGptResponse;
