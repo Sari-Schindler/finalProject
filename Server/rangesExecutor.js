@@ -37,8 +37,8 @@ class RangesExecutor {
 
             console.log("index: ", index, "Sequential index: ", sequentialIndex);
             let lastDay = this.findLastDay(index);
-            if(lastDay > this.convertStringToDate(this.stocksData[this.stocksData.length - 1].date)){
-                console.log("break!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            if(lastDay > this.stocksData[this.stocksData.length - 1].date){
+                console.log("break!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
                 break;
             }
 
@@ -78,12 +78,6 @@ class RangesExecutor {
 
 
         lastDay.setMonth(lastDay.getMonth() + this.strategy.months);
-        const daysBetween = lastDay - this.convertStringToDate(this.stocksData[index].date);
-        if(index + daysBetween > this.stocksData.length ){
-            console.log("last day: ", this.stocksData[this.stocksData.length- 1])
-
-            lastDay = this.stocksData[this.stocksData.length - 1].date;
-        }
         lastDay = this.convertDateToString(lastDay);
         return lastDay;
     }
