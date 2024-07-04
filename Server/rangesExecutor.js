@@ -76,8 +76,14 @@ class RangesExecutor {
     findLastDay(index) {
         let lastDay = this.convertStringToDate(this.stocksData[index].date);
 
-        //ממציא את היום האחרון - לא לפי מה שיש או אין!!!
+
         lastDay.setMonth(lastDay.getMonth() + this.strategy.months);
+        const daysBetween = lastDay - this.convertStringToDate(this.stocksData[index].date);
+        if(index + daysBetween > this.stocksData.length ){
+            console.log("last day: ", this.stocksData[this.stocksData.length- 1])
+
+            lastDay = this.stocksData[this.stocksData.length - 1].date;
+        }
         lastDay = this.convertDateToString(lastDay);
         return lastDay;
     }
