@@ -1,17 +1,17 @@
-import express from 'express';
-import 'dotenv/config';
-import usersRouter from './routes/usersRoute.js';
-import registerRouter from './routes/registerRoute.js';
-import loginRouter from './routes/loginRoute.js';
-import submitFormRouter from './routes/submitFormRoute.js';
-import authenticateToken from './middleware/authenticateToken.js';
-import cors from 'cors';
-import https from 'https';
-import example from './example.js';
-import fs from 'fs';
+const express = require('express');
+require('dotenv').config();
+const usersRouter = require('./routes/usersRoute.js');
+const registerRouter = require('./routes/registerRoute.js');
+const loginRouter = require('./routes/loginRoute.js');
+const submitFormRouter = require('./routes/submitFormRoute.js');
+const authenticateToken = require('./middleware/authenticateToken.js');
+const cors = require('cors');
+const https = require('https');
+const example = require('./example.js');
+const fs = require('fs');
 
 // Initialize environment variables
-import 'dotenv/config';
+require('dotenv').config();
 const app = express();
 
 // Middleware
