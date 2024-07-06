@@ -1,9 +1,9 @@
-const  Portfolio  = require('./portfolio.js'); // Use named import
+const  Portfolio  = require('./services/portfolio.js'); // Use named import
 const fs = require("fs");
-const Strategy = require('./Strategy.js');
-const RangesExecutor = require('./RangesExecutor.js');
+const Strategy = require('./services/strategy.js');
+const RangesExecutor = require('./services/rangesExecutor.js');
 const  path = require("path");
-const stocksData = require('./stocksHistoricalData.json');
+const stocksData = require('./data/stocksHistoricalData.json');
 
 class SpyDropStrategy extends Strategy {
     constructor() {

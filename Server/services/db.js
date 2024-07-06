@@ -6,7 +6,8 @@ async function createConnection() {
         host: 'localhost',
         user: 'root',
         database: process.env.DB_NAME,
-        password: process.env.PASSWORD
+        password: process.env.PASSWORD,
+        port: 3307
     });
 }
 

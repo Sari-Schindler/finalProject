@@ -1,4 +1,4 @@
-const Portfolio = require('./Portfolio.js');
+const Portfolio = require('./portfolio.js');
 let runStrCount = 0;
 let totalTime = 0;
 
