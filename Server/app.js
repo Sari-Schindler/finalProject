@@ -7,7 +7,7 @@ const submitFormRouter = require('./routes/submitFormRoute.js');
 const authenticateToken = require('./middleware/authenticateToken.js');
 const cors = require('cors');
 const https = require('https');
-const example = require('./example.js');
+//const example = require('./example.js');
 const fs = require('fs');
 
 // Initialize environment variables

@@ -1,6 +1,6 @@
 const { executeQuery } = require('./executeQuery.js');
 const { createQuery, getByIdQuery } = require('./query.js');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 class LoginService {
     async login(email, password) {

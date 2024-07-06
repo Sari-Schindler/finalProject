@@ -1,6 +1,6 @@
 // portfolio.test.js
 
-const Portfolio = require('../portfolio');
+const Portfolio = require('../services/portfolio');
 
 test('adds 1 + 2 to equal 3', () => {
     expect(3).toBe(3);
