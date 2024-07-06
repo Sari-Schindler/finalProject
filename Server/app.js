@@ -4,6 +4,8 @@ const usersRouter = require('./routes/usersRoute.js');
 const registerRouter = require('./routes/registerRoute.js');
 const loginRouter = require('./routes/loginRoute.js');
 const strategyRouter = require('./routes/strategyRoute.js'); // Update this line
+const submitFormRouter = require('./routes/submitFormRoute.js');
+
 const authenticateToken = require('./middleware/authenticateToken.js');
 const cors = require('cors');
 const https = require('https');
@@ -28,9 +30,11 @@ app.get('/example', (req, res) => {
 
 // app.get('/example', example)
 app.use('/strategy', strategyRouter); // Ensure this route is correctly set up
+app.use('/submitForm', submitFormRouter);
 
 app.use('/login', loginRouter);
 app.use('/register', registerRouter);
+
 app.use(authenticateToken);
 app.use('/users', usersRouter);
 
