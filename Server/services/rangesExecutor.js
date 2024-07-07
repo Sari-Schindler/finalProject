@@ -1,6 +1,4 @@
 const Portfolio = require('./portfolio.js');
-let runStrCount = 0;
-let totalTime = 0;
 
 class RangesExecutor {
     stocksData;

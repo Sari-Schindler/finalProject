@@ -1,25 +1,18 @@
-class SpyDropStrategy extends Strategy {
+class SpyMonthlyStrategy extends Strategy {
    constructor() {
-       super('SPY', 10); // stockSymbol is 'SPY', quantity is 10 shares
+       super('SPY', 100); // stockSymbol is 'SPY', quantity is 100 dollars
    }
    firstDayActions() {
-       console.log("Monitoring ", this.stockSymbol, "for significant price changes.");
+       console.log("Monitoring ", this.stockSymbol, "for monthly purchases.");
    }
    dayActions() {
-       const stockPrice = this.portfolio.checkStockPrice();
-       const previousDayPrice = this.portfolio.stocksData[this.portfolio.index - 1][this.stockSymbol];
-       if (previousDayPrice && stockPrice <= previousDayPrice * 0.97 && this.portfolio.stocks === 0) {
-           this.portfolio.buyStocksByDollars(stockPrice * this.quantity);
-       }
-       if (this.portfolio.stocks > 0 && stockPrice >= previousDayPrice * 1.05) {
-           this.portfolio.cash += stockPrice * this.portfolio.stocks;
-           this.portfolio.stocks = 0; // Sell all shares
-           console.log("Sold all shares of ", this.stockSymbol," at ",stockPrice);
+       if (this.portfolio.isFirstDayOfMonth() && this.portfolio.stocks === 0) {
+           this.portfolio.buyStocksByDollars(this.quantity);
        }
    }
 }
 function main() {
-   const myStrategy = new SpyDropStrategy();
+   const myStrategy = new SpyMonthlyStrategy();
    const myRangesExecutor = new RangesExecutor(stocksData, myStrategy, 10000, 300);
    const executionResults = myRangesExecutor.allRangesExecution();
    console.log("execution results:", executionResults);
