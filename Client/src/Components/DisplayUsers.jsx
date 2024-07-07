@@ -1,5 +1,4 @@
 import React, { useState, useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
 import { userContext } from "../App.jsx";
 
@@ -30,8 +29,7 @@ const DisplayUsers = () => {
 
       if (response.ok) {
         const result = await response.json();
-        setUsers(result); // Store fetched data in state
-        console.log(result)
+        setUsers(result); 
       } else {
         throw new Error("Failed to fetch users");
       }

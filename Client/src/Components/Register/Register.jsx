@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Link, useNavigate } from "react-router-dom"; // Import useNavigate from react-router-dom
+import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import style from "./Register.module.css";
 import { userContext } from "../../App";
@@ -10,7 +10,7 @@ const Register = () => {
   const [errMessage, setErrMessage] = useState("");
   const [registerStep, setRegisterStep] = useState(1);
   const [available, setAvailable] = useState({ username: true, email: true });
-  const navigate = useNavigate(); // Use useNavigate hook here
+  const navigate = useNavigate()
   const { setCurrentUser } = useContext(userContext);
 
   const [user, setUser] = useState({

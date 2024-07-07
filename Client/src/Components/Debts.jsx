@@ -1,15 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React from "react";
 
 
 export default function LearnMore() {
-
-    const navigate = useNavigate();
-
-    function backToHome(){
-        navigate("/home");
-    }
-
     return(<>
     <h1>Debt: What It Is, How It Works, Types, and Ways to Pay Back</h1>
     <h2>What Is Debt?</h2>
@@ -77,10 +69,7 @@ export default function LearnMore() {
 
         The fastest way to pay off debt is to devote a greater portion of your income to monthly debt payments, ideally paying off credit card debts in full each month before any interest charges kick in. If you need to prioritize, experts generally recommend paying off your highest interest debts first and working your way down from there.
 
-        You can also consolidate several debts into one, which may make sense if the new loan carries a lower interest rate. Similarly, you may be able to transfer your credit card balances to another card with a lower interest rate or, ideally, a 0% interest rate for a period of time.</p>
-
-        <button onClick={backToHome}>scroll up👆        </button>
-    
+        You can also consolidate several debts into one, which may make sense if the new loan carries a lower interest rate. Similarly, you may be able to transfer your credit card balances to another card with a lower interest rate or, ideally, a 0% interest rate for a period of time.</p>    
     
     
     </>)

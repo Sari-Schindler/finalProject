@@ -1,10 +1,7 @@
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 import Router from './Components/Router'
 import {createContext} from 'react'
-import React, { useEffect, useState } from 'react';
-import { Line } from 'react-chartjs-2';
+import React, {  useState } from 'react';
 
 export const userContext = createContext()
 
