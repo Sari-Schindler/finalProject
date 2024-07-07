@@ -61,7 +61,7 @@ function handleResponse(response) {
     console.log('Completion Tokens:', usage.completion_tokens);
     console.log('Estimated Cost:', totalCost);
 
-    fs.writeFile('gptResponse.txt', responseContent, err => {
+    fs.writeFile('../Server/data/gptResponse.txt', responseContent, err => {
         if (err) {
             console.error('Error writing to file:', err);
         } else {
@@ -72,7 +72,7 @@ function handleResponse(response) {
 
 function readGptResponse() {
     return new Promise((resolve, reject) => {
-        fs.readFile('./gptResponse.txt', 'utf8', (err, data) => {
+        fs.readFile('../Server/data/gptResponse.txt', 'utf8', (err, data) => {
             if (err) {
                 console.error(err);
                 reject(err);

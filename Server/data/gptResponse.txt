@@ -1,32 +1,22 @@
-class SpyDropStrategy extends Strategy {
+class BhjhvStrategy extends Strategy {
    constructor() {
-       super('SPY', 10); 
+       super('INVALID_STOCK_SYMBOL', 0); // Invalid stock symbol
    }
    firstDayActions() {
-       console.log("Monitoring ", this.stockSymbol, "for significant price changes.");
+      console.log("Monitoring ", this.stockSymbol, "for any changes.");
    }
    dayActions() {
-       const stockPrice = this.portfolio.checkStockPrice();
-       const previousDayPrice = this.portfolio.stocksData[this.portfolio.index - 1][this.stockSymbol];
-       if (previousDayPrice && stockPrice <= previousDayPrice * 0.97 && this.portfolio.stocks === 0) {
-           this.portfolio.buyStocksByDollars(stockPrice * this.quantity);
-       }
-       if (this.portfolio.stocks > 0 && stockPrice >= previousDayPrice * 1.05) {
-           this.portfolio.sellAll();
-           console.log("Sold all shares of ", this.stockSymbol," at ",stockPrice);
-       }
+      console.log("Implement your custom strategy logic here");
    }
 }
-
 function main() {
-   const myStrategy = new SpyDropStrategy();
+   const myStrategy = new BhjhvStrategy();
    const myRangesExecutor = new RangesExecutor(stocksData, myStrategy, 10000, 300);
    const executionResults = myRangesExecutor.allRangesExecution();
-   console.log("execution results:", executionResults);
-   fs.writeFile("./executionResults.json", JSON.stringify(executionResults), function(err) {
+   console.log("Execution results:", executionResults);
+   fs.writeFile("./data/executionResults.json", JSON.stringify(executionResults), function(err) {
        if (err) throw err;
-       console.log('complete');
+       console.log('Execution results saved successfully');
    });
 }
-
 main();

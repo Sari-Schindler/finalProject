@@ -1,7 +1,7 @@
 const { RegisterService } = require("../services/registerService.js");
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
 
 const registerService = new RegisterService();
 
@@ -9,8 +9,6 @@ class RegisterController {
     async register(req, res, next) {
         try {
             console.log("registerController");
-
-            // Ensure password exists in request body
             const { username, email, password } = req.body;
             if (!password) {
                 return res.status(400).json({ message: "Password is required" });

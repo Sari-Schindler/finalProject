@@ -73,7 +73,7 @@ function main() {
     const myRangesExecutor = new RangesExecutor(stocksData, myStrategy, 10000, 300);
     const executionResults = myRangesExecutor.allRangesExecution();
     console.log("execution results:", executionResults);
-    fs.writeFile("./executionResults.json", JSON.stringify(executionResults), function(err) {
+    fs.writeFile("../Server/data/executionResults.json", JSON.stringify(executionResults), function(err) {
         if (err) throw err;
         console.log('complete');
     });

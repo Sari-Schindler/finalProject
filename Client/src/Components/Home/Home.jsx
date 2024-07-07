@@ -114,10 +114,11 @@ const Home = () => {
       console.log('Server response:', result);
       
       // Display the strategy response as a chart
-      fetchAndDisplayChart('strategy'); // Fetch and display chart using strategy endpoint
+      //fetchAndDisplayChart('strategy'); // Fetch and display chart using strategy endpoint
     } catch (error) {
       console.error('Error submitting data:', error);
     }
+    fetchAndDisplayChart('gptresponse')
   }
   
 
@@ -155,24 +156,28 @@ const Home = () => {
         </nav>
       </header>
 
-      <button onClick={() => fetchAndDisplayChart('example')} className={style.ShowGraph}>Show Example Graph</button>
-
-      <h1>Home</h1>
+  
+      {/* <h1>Home</h1>
 
       <div className="App">
         <h1>Stock Data Analysis</h1>
-        <canvas id="executionResultsChart" width="400" height="200"></canvas>
-      </div>
+      </div> */}
 
-      <div>
-        <input 
+      <div className={style.inputDiv}>
+        <input className={style.inputBox}
           type="text" 
           value={inputValue} 
           onChange={(e) => setInputValue(e.target.value)} 
-          placeholder="Enter text here"
+          placeholder="Hi, I'm an AI assistant .Enter data and confirm the button to check your data"
         />
         <button onClick={handleInputSubmit}>Submit</button>
       </div>
+
+      <canvas id="executionResultsChart" width="400" height="200"></canvas>
+
+      <p className={style.p_graph}>for example, click the button to display SPY stocks👇</p>
+      <button onClick={() => fetchAndDisplayChart('example')} className={style.ShowGraph}>Click me</button>
+
 
       <Outlet />
     </>
