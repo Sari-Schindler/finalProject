@@ -11,7 +11,6 @@ const submitFormService = {
       },
     });
 
-    // Send email to manager
     await transporter.sendMail({
       from: `"Investors Support" <${process.env.MANAGER_EMAIL}>`,
       to: process.env.MANAGER_EMAIL,
@@ -19,7 +18,6 @@ const submitFormService = {
       text: `You received a new message from ${name} (${email}): ${message}`,
     });
 
-    // Send confirmation email to user with embedded image
     await transporter.sendMail({
       from: `"Investors Support" <${process.env.MANAGER_EMAIL}>`,
       to: email,
@@ -33,7 +31,7 @@ const submitFormService = {
         {
           filename: 'logo.png',
           path: '../Client/Images/logo.png',
-          cid: 'unique@nodemailer.com' // Use this CID to reference the image in the HTML
+          cid: 'unique@nodemailer.com'
         }
       ]
     });

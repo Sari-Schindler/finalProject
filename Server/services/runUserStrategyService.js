@@ -1,6 +1,3 @@
-const Strategy = require('./strategy.js');
-const RangesExecutor = require('./rangesExecutor.js');
-const stocksData = require('../data/stocksHistoricalData.json');
 const axios = require('axios');
 const https = require('https');
 const dotenv = require('dotenv');
@@ -9,7 +6,7 @@ const path = require('path');
 
 dotenv.config();
 
-const apiKey = process.env.API_KEY;  // Ensure you set this in your .env file
+const apiKey = process.env.API_KEY;
 const apiUrl = `https://api.openai.com/v1/chat/completions`;
 
 function readPrompt() {
