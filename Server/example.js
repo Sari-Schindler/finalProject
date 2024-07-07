@@ -34,7 +34,7 @@ const myRangesExecutor = new RangesExecutor(stocksData, myStrategy, 1000000, 400
 const executionResults = myRangesExecutor.allRangesExecution();
 
 console.log('Execution results:', executionResults);
-fs.writeFile('./executionResults.json', JSON.stringify(executionResults), (err) => {
+fs.writeFile('./data/executionResults.json', JSON.stringify(executionResults), (err) => {
     if (err) throw err;
     console.log('Complete');
 });

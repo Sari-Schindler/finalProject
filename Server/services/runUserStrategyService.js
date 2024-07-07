@@ -5,6 +5,8 @@ const axios = require('axios');
 const https = require('https');
 const dotenv = require('dotenv');
 const fs = require('fs');
+const path = require('path');
+
 dotenv.config();
 
 const apiKey = process.env.API_KEY;  // Ensure you set this in your .env file
@@ -28,6 +30,7 @@ async function getChatGptResponse(userInput) {
         const prompt = await readPrompt();
         const data = {
             model: 'gpt-3.5-turbo',
+            temperature: 0,
             messages: [
                 { role: 'system', content: prompt },
                 { role: 'user', content: `User Input: ${userInput}` }
@@ -61,7 +64,9 @@ function handleResponse(response) {
     console.log('Completion Tokens:', usage.completion_tokens);
     console.log('Estimated Cost:', totalCost);
 
-    fs.writeFile('../Server/data/gptResponse.txt', responseContent, err => {
+    const filePath = path.resolve(__dirname, '../data/gptResponse.txt');
+
+    fs.writeFile(filePath, responseContent, err => {
         if (err) {
             console.error('Error writing to file:', err);
         } else {
@@ -72,7 +77,8 @@ function handleResponse(response) {
 
 function readGptResponse() {
     return new Promise((resolve, reject) => {
-        fs.readFile('../Server/data/gptResponse.txt', 'utf8', (err, data) => {
+        const filePath = path.resolve(__dirname, '../data/gptResponse.txt');
+        fs.readFile(filePath, 'utf8', (err, data) => {
             if (err) {
                 console.error(err);
                 reject(err);

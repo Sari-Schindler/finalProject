@@ -1,7 +1,7 @@
 const { RegisterService } = require("../services/registerService.js");
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 const registerService = new RegisterService();
 

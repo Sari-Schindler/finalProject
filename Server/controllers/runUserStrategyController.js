@@ -1,4 +1,10 @@
 const { runUserStrategyService } = require("../services/runUserStrategyService.js");
+const stocksData = require('../data/stocksHistoricalData.json');
+const fs = require('fs');
+const path = require('path');
+const Strategy = require('../services/strategy.js');
+const RangesExecutor = require('../services/rangesExecutor.js');
+const executionResults = require('../data/executionResults.json');
 
 module.exports.runUserStrategyController = {
     async runUserStrategy(req, res) {
