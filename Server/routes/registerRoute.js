@@ -7,6 +7,9 @@ const registerController = new RegisterController();
 
 registerRouter.get('/exist', registerController.existUser);
 
-registerRouter.post('/', validateUserData, (req, res, next) => validate(req, res, next), registerController.register);
+registerRouter.post(
+    '/',
+    validateUserData,
+    (req, res, next) => validate(req, res, next), registerController.register);
 
 module.exports = registerRouter;

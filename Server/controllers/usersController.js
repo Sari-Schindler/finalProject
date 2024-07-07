@@ -4,7 +4,6 @@ const usersService = new UsersService();
 class UsersController {
     async getUsers(req, res, next) {
         try {
-            console.log("user service: ", req.query);
             const resultItems = await usersService.getUsers(req.query);
             return res.status(200).json(resultItems);
         } catch (ex) {
@@ -41,8 +40,6 @@ class UsersController {
 
     async deleteUser(req, res, next) {
         try {
-            console.log("users");
-            console.log(req.params.id);
             const userDetails = await usersService.getUserById(req.params.id);
             authorizeUser(userDetails[0].id, req.user.id, res);
             const response = await usersService.deleteUser(req.params.id);
@@ -57,9 +54,6 @@ class UsersController {
 
     async updateUser(req, res, next) {
         try {
-            console.log("users");
-            console.log(req.params.id);
-            console.log(req.body);
             const response = await usersService.updateUser(req.body, req.params.id);
             res.status(response.affectedRows ? 204 : 404).send();
         } catch (ex) {

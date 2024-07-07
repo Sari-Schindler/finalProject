@@ -8,7 +8,6 @@ const registerService = new RegisterService();
 class RegisterController {
     async register(req, res, next) {
         try {
-            console.log("registerController");
             const { username, email, password } = req.body;
             if (!password) {
                 return res.status(400).json({ message: "Password is required" });
@@ -16,7 +15,6 @@ class RegisterController {
 
             let existUsername = await registerService.getUsers({ username });
             let existEmail = await registerService.getUsers({ email });
-            console.log("username:", existUsername, "useremail:", existEmail);
 
             if (existUsername.length || existEmail.length) {
                 return res.status(409).json({ message: "Username or Email already exists" });
@@ -34,19 +32,16 @@ class RegisterController {
                 res.status(201).json({ id: response.userResult.id, token: token });
             }
         } catch (error) {
-            console.log(error);
             res.status(500).json({ message: 'Internal server error' });
         }
     }
 
     async existUser(req, res, next) {
         try {
-            console.log("existUser func");
             const { username, email } = req.query;
 
             let existUsername = await registerService.getUsers({ username });
             let existEmail = await registerService.getUsers({ email });
-            console.log("username", existUsername.length > 0, "email:", existEmail);
 
             const response = { username: false, email: false };
             if (existUsername.length) {
@@ -62,7 +57,6 @@ class RegisterController {
             }
             res.json(response);
         } catch (err) {
-            console.log(err);
             res.status(500).json('internal server error');
         }
     }

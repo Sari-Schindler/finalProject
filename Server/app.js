@@ -10,17 +10,14 @@ const gptresponseRouter = require('./routes/gptresponseRoute.js'); // Added line
 
 const authenticateToken = require('./middleware/authenticateToken.js');
 const cors = require('cors');
-const https = require('https');
-const fs = require('fs');
 
 const app = express();
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 
-app.use('/example', exampleRouter); // Added line
-app.use('/gptresponse', gptresponseRouter); // Added line
+app.use('/example', exampleRouter);
+app.use('/gptresponse', gptresponseRouter);
 app.use('/strategy', strategyRouter);
 app.use('/submitForm', submitFormRouter);
 app.use('/login', loginRouter);
