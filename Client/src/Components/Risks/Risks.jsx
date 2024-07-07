@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import style from './Risks.module.css'
 
 export default function Risks() {

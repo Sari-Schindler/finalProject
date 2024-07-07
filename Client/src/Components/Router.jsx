@@ -14,16 +14,10 @@ const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Default route redirects to the login page */}
         <Route path="/" element={<Navigate to="/login" />} />
-        
-        {/* Login route */}
         <Route path="/login" element={<Login />} />
-        
-        {/* Registration route */}
         <Route path="/register" element={<Register />} />
         
-        {/* Home route with nested routes for subpages */}
         <Route path="/home" element={<Home />}>
           <Route path="debts" element={<Debts />} />
           <Route path="about" element={<About />} />
@@ -34,7 +28,6 @@ const Router = () => {
 
         </Route>
         
-        {/* Catch-all route for 404 Not Found */}
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

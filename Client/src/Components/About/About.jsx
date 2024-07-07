@@ -1,15 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React from "react";
 import style from './About.module.css'
 
 
 export default function About() {
-
-    const navigate = useNavigate();
-
-    function backToHome(){
-        navigate("/home");
-    }
 
     return(<>
         <h1>Build your startegy with us!!!</h1>

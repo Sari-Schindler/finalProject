@@ -31,8 +31,6 @@ const ContactPage = () => {
       if(response.status === 200) {
         alert("Your details saved. We will get back to you soon");
       }
-      console.log('Form submitted successfully:', response.data);
-      // Reset form and state
       setFormData({ name: '', email: '', message: '' });
       setHaveQuestion(false);
     } catch (error) {

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Chart, registerables } from 'chart.js';
 import Cookies from 'js-cookie';
 import style from './Home.module.css';
-import { userContext } from "../../App"; // Assuming userContext is defined in App.jsx or a separate file
+import { userContext } from "../../App";
 
 Chart.register(...registerables);
 
@@ -12,9 +12,11 @@ const Home = () => {
   const { currentUser, setCurrentUser } = useContext(userContext);
   const [chartData, setChartData] = useState(null);
   const [inputValue, setInputValue] = useState('');
+  const [loading, setLoading] = useState(false); 
   const navigate = useNavigate();
 
   async function fetchAndDisplayChart(endpoint) {
+    setLoading(true);
     try {
       const response = await fetch(`http://localhost:3000/${endpoint}`, {
         headers: {
@@ -25,24 +27,24 @@ const Home = () => {
   
       if (!data || data.length === 0) {
         console.error('No data received');
+        setLoading(false);
         return;
       }
   
-      console.log('Fetched data:', data);
   
+      if(data[0]==null){
+        alert("invalid input")
+        return
+      }
       const validData = data.filter(item => item && item.date && item.results);
   
-      const invalidData = data.filter(item => !item || !item.date || !item.results);
-      if (invalidData.length > 0) {
-        console.warn('Invalid data items:', invalidData);
-      }
   
       const labels = validData.map(result => result.date);
       const values = validData.map(result => result.results);
   
       const ctx = document.getElementById('executionResultsChart').getContext('2d');
       if (chartData) {
-        chartData.destroy(); // Destroy existing chart instance if it exists
+        chartData.destroy(); 
       }
       const newChart = new Chart(ctx, {
         type: 'line',
@@ -61,12 +63,22 @@ const Home = () => {
         },
         options: {
           responsive: true,
+          maintainAspectRatio: false,
           scales: {
             x: {
               display: true,
               title: {
                 display: true,
                 text: 'Date'
+              },
+              grid: {
+                drawBorder: true,
+                color: function(context) {
+                  if (context.tick.value === 0) {
+                    return '#ff0000';
+                  }
+                  return '#e0e0e0';
+                }
               }
             },
             y: {
@@ -74,6 +86,15 @@ const Home = () => {
               title: {
                 display: true,
                 text: 'Results'
+              },
+              grid: {
+                drawBorder: true,
+                color: function(context) {
+                  if (context.tick.value === 0) {
+                    return '#ff0000';
+                  }
+                  return '#e0e0e0';
+                }
               }
             }
           },
@@ -94,13 +115,16 @@ const Home = () => {
         }
       });
   
-      setChartData(newChart); // Store the chart instance in state
+      setChartData(newChart);
+      setLoading(false); 
     } catch (error) {
       console.error('Error fetching or displaying chart:', error);
+      setLoading(false);
     }
   }
   
   async function handleInputSubmit() {
+    setLoading(true); 
     try {
       const response = await fetch('http://localhost:3000/strategy', {
         method: 'POST',
@@ -108,17 +132,18 @@ const Home = () => {
           'Content-Type': 'application/json',
           'Authorization': Cookies.get('token')
         },
-        body: JSON.stringify({ userInput: inputValue }) // Ensure the key matches the one expected on the server-side
+        body: JSON.stringify({ userInput: inputValue })
       });
-      const result = await response.json();
-      console.log('Server response:', result);
       
-      // Display the strategy response as a chart
-      //fetchAndDisplayChart('strategy'); // Fetch and display chart using strategy endpoint
+      if(response.status ===400){
+        alert("Please enter data");
+        return
+      }
+      else
+        fetchAndDisplayChart('gptresponse');
     } catch (error) {
       console.error('Error submitting data:', error);
     }
-    fetchAndDisplayChart('gptresponse')
   }
   
 
@@ -155,29 +180,22 @@ const Home = () => {
           <a href="#" className={style.nav} onClick={handleLogout}>Log out</a>
         </nav>
       </header>
-
   
-      {/* <h1>Home</h1>
-
-      <div className="App">
-        <h1>Stock Data Analysis</h1>
-      </div> */}
-
       <div className={style.inputDiv}>
         <input className={style.inputBox}
           type="text" 
           value={inputValue} 
           onChange={(e) => setInputValue(e.target.value)} 
-          placeholder="Hi, I'm an AI assistant .Enter data and confirm the button to check your data"
+          placeholder="Hi, I'm an AI assistant. Enter data and confirm the button to check your data"
         />
         <button onClick={handleInputSubmit}>Submit</button>
       </div>
 
-      <canvas id="executionResultsChart" width="400" height="200"></canvas>
+      {loading && <p className={style.loadingMessage}>Checking data...</p>} {/* Display loading message */}
 
-      <p className={style.p_graph}>for example, click the button to display SPY stocks👇</p>
-      <button onClick={() => fetchAndDisplayChart('example')} className={style.ShowGraph}>Click me</button>
-
+      <div className={style.chartContainer}>
+        <canvas id="executionResultsChart"></canvas>
+      </div>
 
       <Outlet />
     </>

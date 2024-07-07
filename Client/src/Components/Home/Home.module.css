@@ -1,96 +1,90 @@
-/* Home.module.css */
 .head1 {
-    width: 100%;
-    background-color: #f8f8f8;
-    padding: 10px 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1000;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .logoContainer {
-    flex: 0 0 auto;
-  }
-  
-  .logo {
-    height: 80px; /* Adjust height of the logo as needed */
-    width: 100%; /* Maintain aspect ratio */
-  }
-  
-  .navbar {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    width: 100%;
-    padding: 0 20px;
-  }
-  
-  .nav {
-    text-decoration: none;
-    color: #333;
-    font-size: 16px;
-    font-weight: 500;
-    padding: 10px 20px;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .nav:hover {
-    background-color: #e0e0e0;
-  }
-  
-  .nav.active {
-    background-color: #d4d4d4;
-  }
-  
-  body {
-    padding-top: 60px;
-  }
-  
-  .ShowGraph {
-    margin-top: 20px;
-    color: aqua;
-  }
+  width: 100%;
+  background-color: #f8f8f8;
+  padding: 10px 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
-  .p_graph{
-    margin-top: 140px;
-  }
-  
-  /* Media query for smaller screens */
-  @media (max-width: 768px) {
-    .navbar {
-      flex-direction: column;
-      justify-content: center;
-      text-align: center;
-      padding: 10px;
-    }
-  
-    .nav {
-      padding: 10px 20px;
-      margin-bottom: 10px;
-      width: 100%;
-    }
-  
-    .head1 {
-      padding: 10px;
-    }
-  }
-  
+.logoContainer {
+  flex: 0 0 auto;
+}
 
-  .inputDiv{
-    margin-top: 150px;
-  }
+.logo {
+  height: 80px; /* Adjust height of the logo as needed */
+  width: 100%; /* Maintain aspect ratio */
+}
 
-  .inputBox{
-    width: 300px;
-    height: 300px;
-  }
+.navbar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+  padding: 0 20px;
+}
 
-  .divResponse{
-    margin-top: 250px;
-  }
+.nav {
+  text-decoration: none;
+  color: #333;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 10px 20px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.nav:hover {
+  background-color: #e0e0e0;
+}
+
+.nav.active {
+  background-color: #d4d4d4;
+}
+
+body {
+  padding-top: 60px;
+}
+
+.showGraph {
+  margin-top: 20px;
+  color: aqua;
+}
+
+.p_graph {
+  margin-top: 20px;
+}
+
+.loadingMessage {
+  font-size: 16px;
+  color: #333;
+  margin-top: 20px;
+}
+
+.inputDiv {
+  margin-top: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.inputBox {
+  width: 500px;
+  height: 100px;
+  padding: 10px;
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.chartContainer {
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+  height: 400px; /* Adjust height as needed */
+  margin-top: 20px;
+}
