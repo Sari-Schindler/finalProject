@@ -53,8 +53,12 @@
   }
   
   .ShowGraph {
-    margin-top: 150px;
+    margin-top: 20px;
     color: aqua;
+  }
+
+  .p_graph{
+    margin-top: 140px;
   }
   
   /* Media query for smaller screens */
@@ -77,3 +81,16 @@
     }
   }
   
+
+  .inputDiv{
+    margin-top: 150px;
+  }
+
+  .inputBox{
+    width: 300px;
+    height: 300px;
+  }
+
+  .divResponse{
+    margin-top: 250px;
+  }
