@@ -1,5 +1,5 @@
 const { executeQuery } = require('./executeQuery.js');
-const { getByIdQuery, getQuery, deleteQuery, updateQuery, createQuery, softDeleteQuery } = require('./query.js');
+const { getQuery, createQuery } = require('./query.js');
 
 class RegisterService {
 

@@ -1,5 +1,5 @@
 const { executeQuery } = require('./executeQuery.js');
-const { createQuery, getByIdQuery } = require('./query.js');
+const { getByIdQuery } = require('./query.js');
 const bcrypt = require('bcryptjs');
 
 class LoginService {
@@ -8,13 +8,10 @@ class LoginService {
             const password1 = password;
             const query = getByIdQuery('access', 'email');
             const [user] = await executeQuery(query, [email]);
-            console.log('logged user', password1);
-            console.log("bcrypt     ", user.password);
+  
             const isMatch = await bcrypt.compare(password, user.password);
-            console.log("ism", isMatch);
             if (user && isMatch) {
-                console.log("got user and compare psw");
-                delete user.password; // Remove password from response
+                delete user.password; 
                 return user;
             }
             return null;

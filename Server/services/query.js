@@ -38,8 +38,5 @@ function createQuery(table, columns, values) {
     return `INSERT INTO ${table} (${columns}) VALUES (${values})`;
 }
 
-function softDeleteQuery(table, column) {
-    return `UPDATE ${table} SET deleted_at = NOW() WHERE ${column} = ?`;
-}
 
-module.exports = { getByIdQuery, getQuery, deleteQuery, updateQuery, createQuery, softDeleteQuery };
+module.exports = { getByIdQuery, getQuery, deleteQuery, updateQuery, createQuery };

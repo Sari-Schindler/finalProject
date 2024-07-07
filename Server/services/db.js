@@ -3,13 +3,6 @@ require('dotenv/config');
 
 async function createConnection() {
     try {
-        console.log('try to connect to Mysql', {
-            host: process.env.DB_HOST,
-            user: process.env.DB_USER,
-            database: process.env.DB_NAME,
-            password: process.env.PASSWORD,
-            port: process.env.DB_PORT
-        });
         const connection = await mysql.createConnection({
             host: process.env.DB_HOST,
             user: process.env.DB_USER,
@@ -17,11 +10,10 @@ async function createConnection() {
             password: process.env.PASSWORD,
             port: process.env.DB_PORT
         });
-        console.log('Connected to MySQL database!');
         return connection;
     } catch (error) {
         console.error('Error connecting to MySQL database:', error);
-        throw error;  // Rethrow the error to propagate it further
+        throw error; 
     }
 }
 
